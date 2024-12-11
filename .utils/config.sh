@@ -13,9 +13,12 @@ PUBLISH_FOLDER="publish"
 PUBLISH_BRANCH="publish"
 # DIST_REPO comes from the actual git configuration
 
-VERSION_FILE="version.txt"
-PROJECT_INFO_FILE="src/app-info.txt"
-PROJECT_INFO_JSON_FILE="src/app-info.json"
+# An extra parameter to define current project profile
+SCENARIO_ID_FILE="project-scenario-id.txt"
+
+VERSION_FILE="project-version.txt"
+PROJECT_INFO_FILE="project-info.txt"
+PROJECT_INFO_JSON_FILE="src/project-info.json"
 
 # TODO: To use generic `init-crossplatform-command-names.sh`?
 FINDCMD="find"

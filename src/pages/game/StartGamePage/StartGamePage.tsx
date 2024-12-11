@@ -7,13 +7,13 @@ import classNames from 'classnames';
 import { effectTime } from 'src/core/assets/scss';
 import { ScreenWrapper } from 'src/components/screens/ScreenWrapper';
 import {
-  EDialogGameType,
+  // EDialogGameType,
+  // dialogGameNames,
   TGameRouterParams,
   defaultDialogGameType,
-  dialogGameNames,
   dialogGameTypes,
 } from 'src/core/types';
-import { dialogGamesHash } from 'src/dialogs';
+import { dialogGamesHash } from 'src/scenario';
 import { ShowError } from 'src/components/app/ShowError';
 import { useGameName } from 'src/core/hooks/game';
 
@@ -26,6 +26,7 @@ export const StartGamePage: React.FC = observer(() => {
   console.log('[StartGamePage]', {
     gameId,
   });
+  debugger;
   const error = React.useMemo(() => {
     const isValidGame = !!gameId && dialogGameTypes.includes(gameId) && !!dialogGamesHash[gameId];
     if (!isValidGame) {

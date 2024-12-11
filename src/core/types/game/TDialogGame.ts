@@ -7,7 +7,7 @@ import { TDialogScreenId } from './TDialogScreenId';
 
 export interface TDialogAnswer {
   text?: string;
-  // isCorrect?: boolean;
+  isCorrect?: boolean;
   buttonSx?: SxProps;
   goTo?: TDialogScreenId;
 }

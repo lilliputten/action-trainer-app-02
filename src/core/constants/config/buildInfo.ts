@@ -1,27 +1,12 @@
-import buildInfoModule from 'src/build-info.json';
+import buildInfoModule from 'src/project-info.json';
 
 import { TBuildInfo } from 'src/core/types/app/TBuildInfo';
 
 const buildInfo: TBuildInfo = buildInfoModule;
 
-const {
-  currentTimeStr,
-  currentTimeTag,
-  gitBranch,
-  gitCommitHash,
-  projectName,
-  timestamp,
-  timetag,
-  version,
-} = buildInfo;
+const { projectInfo } = buildInfo;
 
-export {
-  currentTimeStr,
-  currentTimeTag,
-  gitBranch,
-  gitCommitHash,
-  projectName,
-  timestamp,
-  timetag,
-  version,
-};
+const match = projectInfo.match(/^\(\S\+\)/);
+const version = match ? match[1] : 'UNKNOWN';
+
+export { projectInfo, version };

@@ -1,6 +1,6 @@
 #!/bin/sh
 # @desc Update version number & build timestamps
-# @changed 2024.12.02, 12:54
+# @changed 2024.12.11, 11:36
 
 scriptsPath=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")
 rootPath=`dirname "$scriptsPath"`
@@ -15,10 +15,13 @@ test -f "$scriptsPath/config-local.sh" && . "$scriptsPath/config-local.sh"
 
 # Read (and derive) variables from changed files...
 VERSION_PATH="$rootPath/${VERSION_FILE}"
-VERSION=`cat $VERSION_PATH`
-TIMESTAMP=`date -r $VERSION_PATH "+%Y.%m.%d %H:%M:%S %z"`
-TIMETAG=`date -r $VERSION_PATH "+%y%m%d-%H%M"`
-PROJECT_INFO="v.$VERSION / $TIMESTAMP"
+VERSION=`cat "$VERSION_PATH"`
+TIMESTAMP=`date -r "$VERSION_PATH" "+%Y.%m.%d %H:%M:%S %z"`
+TIMETAG=`date -r "$VERSION_PATH" "+%y%m%d-%H%M"`
+
+SCENARIO_ID=`cat "$rootPath/$SCENARIO_ID_FILE"`
+
+PROJECT_INFO="v.$VERSION / $SCENARIO_ID / $TIMESTAMP"
 PROJECT_INFO_REP=`echo "$PROJECT_INFO" | sed 's,/,\\\\/,g'` # Quoted for replace, see below
 
 echo "Version/time: $PROJECT_INFO"
@@ -30,7 +33,7 @@ fi
 
 if [ ! -z "${PROJECT_INFO_JSON_FILE}" ]; then
   echo "Creating '$PROJECT_INFO_JSON_FILE' file..."
-  echo "{ \"versionInfo\": \"$PROJECT_INFO\" }" > $rootPath/$PROJECT_INFO_JSON_FILE
+  echo "{ \"projectInfo\": \"$PROJECT_INFO\" }" > $rootPath/$PROJECT_INFO_JSON_FILE
 fi
 
 UPDATE_FILE() {
@@ -41,7 +44,7 @@ UPDATE_FILE() {
   fi
   NAME="${FILE##*/}" # Exract extension
   EXT="${NAME##*.}" # Exract extension
-  echo "Updating file $NAME..."
+  echo "Updating file $NAME ($FILE)..."
   mv $FILE $FILE.bak || exit 1
   # # TODO: Replace only first occurence of `version`
   if [ "$NAME" = "package-lock.json" ]; then # package-lock
@@ -74,12 +77,19 @@ UPDATE_FILE() {
       | sed "s/\(__timestamp__ =\) \([\"']\).*\2/\1 \2$TIMESTAMP\2/" \
       | sed "s/\(__timetag__ =\) \([\"']\).*\2/\1 \2$TIMETAG\2/" \
     > $FILE || exit 1
-  else # MD
+  elif [ "$EXT" = "html" ]; then # HTML: Replace data in meta tags
     cat $FILE.bak \
-      | sed "s/^\(-* *Project info:\) .*$/\1 $PROJECT_INFO_REP/" \
-      | sed "s/^\(-* *Version:\) .*$/\1 $VERSION/" \
-      | sed "s/^\(-* *Last changes timestamp:\) .*$/\1 $TIMESTAMP/" \
-      | sed "s/^\(-* *Last changes timetag:\) .*$/\1 $TIMETAG/" \
+      | sed "s/\(project-info\" content=\)\([\"']\).*\2/\1 \2$PROJECT_INFO_REP\2/" \
+      | sed "s/\(version\" content=\)\([\"']\).*\2/\1 \2$VERSION\2/" \
+      | sed "s/\(timestamp\" content=\)\([\"']\).*\2/\1 \2$TIMESTAMP\2/" \
+      | sed "s/\(timestag\" content=\)\([\"']\).*\2/\1 \2$TIMESTAG\2/" \
+    > $FILE || exit 1
+  else # MD, other free format files...
+    cat $FILE.bak \
+      | sed "s/\(Project info:\) .*$/\1 $PROJECT_INFO_REP/" \
+      | sed "s/\(Version:\) .*$/\1 $VERSION/" \
+      | sed "s/\(Last changes timestamp:\) .*$/\1 $TIMESTAMP/" \
+      | sed "s/\(Last changes timetag:\) .*$/\1 $TIMETAG/" \
     > $FILE || exit 1
   fi
   rm $FILE.bak || exit 1
@@ -90,3 +100,4 @@ UPDATE_FILE "$prjPath/package.json"
 UPDATE_FILE "$prjPath/pyproject.toml"
 UPDATE_FILE "$prjPath/package-lock.json"
 UPDATE_FILE "$prjPath/README.md"
+UPDATE_FILE "$prjPath/public/index.html"
