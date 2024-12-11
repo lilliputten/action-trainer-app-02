@@ -1,4 +1,4 @@
-import { dialogGamesHash } from 'src/core/constants/game/dialogs';
+import { dialogGamesHash } from 'src/dialogs';
 import { useScreenParams } from 'src/core/hooks/routes';
 
 import { TDialogScreenId } from 'src/core/types';

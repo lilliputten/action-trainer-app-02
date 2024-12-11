@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { dialogGamesHash } from 'src/core/constants/game/dialogs';
+import { dialogGamesHash } from 'src/dialogs';
 
 import { TDialogScreenId, TGameRouterParams } from 'src/core/types';
 import { EDialogGameType, dialogGameTypes } from 'src/core/types/game/EDialogGameType';

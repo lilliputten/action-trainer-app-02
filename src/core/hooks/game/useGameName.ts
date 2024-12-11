@@ -1,5 +1,5 @@
 import { EDialogGameType, dialogGameNames } from 'src/core/types';
-import { dialogGamesHash } from 'src/core/constants/game';
+import { dialogGamesHash } from 'src/dialogs';
 
 export function useGameName(gameId: EDialogGameType) {
   const game = dialogGamesHash[gameId];

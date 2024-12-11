@@ -13,7 +13,7 @@ import {
   dialogGameNames,
   dialogGameTypes,
 } from 'src/core/types';
-import { dialogGamesHash } from 'src/core/constants/game';
+import { dialogGamesHash } from 'src/dialogs';
 import { ShowError } from 'src/components/app/ShowError';
 import { useGameName } from 'src/core/hooks/game';
 
