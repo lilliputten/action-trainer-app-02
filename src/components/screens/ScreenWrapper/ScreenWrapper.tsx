@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Box, IconButton, Stack } from '@mui/material';
 import { ErrorBoundary } from 'react-error-boundary';
 
-import { Fullscreen, FullscreenExit, Replay, Undo } from '@mui/icons-material';
+import { Fullscreen, FullscreenExit, Replay, Undo, Redo } from '@mui/icons-material';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import screenfull from 'screenfull';
@@ -14,15 +14,19 @@ import { useAppSessionStore } from 'src/store';
 import { LoaderSplash } from 'src/ui/Basic';
 import { ShowError } from 'src/components/app/ShowError';
 import { useScreenData } from 'src/core/hooks/routes';
+import { isDev } from 'src/core/constants/config';
 
 interface TProps extends TPropsWithChildrenAndClassName {
   ref?: React.ForwardedRef<HTMLDivElement>;
   screenType?: string;
+  skipVideo?: () => void;
+  videoComplete?: boolean;
   // gameId?: string;
 }
 
 export const ScreenWrapper = observer<TProps, HTMLDivElement>(
   React.forwardRef((props, ref) => {
+    const { children, className, skipVideo, videoComplete } = props;
     const navigate = useNavigate();
 
     const appSessionStore = useAppSessionStore();
@@ -34,7 +38,6 @@ export const ScreenWrapper = observer<TProps, HTMLDivElement>(
      * });
      */
     const { fullscreen, ready } = appSessionStore;
-    const { children, className } = props;
     const location = useLocation();
     const { pathname } = location;
     const isRoot = !pathname || pathname === '/' || pathname.match(/^\/\w+\/\w+$/);
@@ -79,10 +82,20 @@ export const ScreenWrapper = observer<TProps, HTMLDivElement>(
                 <IconButton
                   // component={RouterLinkComponent}
                   // to={getGameRoute(gameId, screenId, true)}
-                  onClick={() => navigate(0)}
                   title="Повторить текущий экран"
+                  onClick={() => navigate(0)}
                 >
                   <Replay />
+                </IconButton>
+              )}
+              {!isRoot && hasVideo && !videoComplete && isDev && (
+                <IconButton
+                  // component={RouterLinkComponent}
+                  // to={`/game/${gameId}`}
+                  title="Пропустить видео"
+                  onClick={skipVideo}
+                >
+                  <Redo />
                 </IconButton>
               )}
               <IconButton title="Полноэкранный режим" onClick={toggleFullscreen}>

@@ -7,6 +7,6 @@ export const dialogGameTypes = [
 ] as const;
 export const defaultDialogGameType = dialogGameTypes[0];
 
-export const dialogGameNames: Record<EDialogGameType, string> = {
-  [EDialogGameType.Default]: 'Начнем с ситуации, когда пациент пришел по записи',
-};
+// export const dialogGameNames: Record<EDialogGameType, string> = {
+//   [EDialogGameType.Default]: 'Начнем с ситуации, когда пациент пришел по записи',
+// };

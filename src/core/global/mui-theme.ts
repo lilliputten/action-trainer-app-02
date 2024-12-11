@@ -123,17 +123,7 @@ function getMuiThemeOptions(params?: TMuiThemeParams) {
     // May be used in code:
     // - breakpoints
   };
-  /* console.log('[mui-theme:getMuiThemeOptions]', {
-   *   defaultBackgroundColor,
-   *   defaultBackgroundColorDark,
-   *   defaultTextColor,
-   *   defaultTextColorDark,
-   *   typography,
-   *   options,
-   *   background,
-   *   text,
-   * });
-   */
+
   return options;
 }
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { Box, ButtonBase, Typography } from '@mui/material';
+import { PlayArrow } from '@mui/icons-material';
 import classNames from 'classnames';
 
 import { effectTime } from 'src/core/assets/scss';
@@ -15,18 +16,15 @@ import {
 } from 'src/core/types';
 import { dialogGamesHash } from 'src/scenario';
 import { ShowError } from 'src/components/app/ShowError';
-import { useGameName } from 'src/core/hooks/game';
+import { useGameData } from 'src/core/hooks/game';
 
 import styles from './StartGamePage.module.scss';
+import { GameScreenPage } from '../GameScreenPage';
 
 const showTitle = true;
 
 export const StartGamePage: React.FC = observer(() => {
   const { game: gameId = defaultDialogGameType } = useParams<TGameRouterParams>();
-  console.log('[StartGamePage]', {
-    gameId,
-  });
-  debugger;
   const error = React.useMemo(() => {
     const isValidGame = !!gameId && dialogGameTypes.includes(gameId) && !!dialogGamesHash[gameId];
     if (!isValidGame) {
@@ -41,13 +39,18 @@ export const StartGamePage: React.FC = observer(() => {
       navigate(`/game/${gameId}/start`);
     }, effectTime);
   }, [gameId, navigate]);
-  const name = useGameName(gameId);
+  const gameData = useGameData(gameId);
+  const { title, omitStartGame } = gameData;
+  const buttonText = 'Начать';
+  if (omitStartGame) {
+    return <GameScreenPage />;
+  }
   return (
     <ScreenWrapper className={classNames(styles.root, isStarted && styles.started)}>
       {!!error && <ShowError className={styles.warningText} error={error} />}
       {!error && (
         <>
-          {showTitle && !!name && (
+          {showTitle && !!title && (
             <Typography
               className={styles.title}
               variant="h2"
@@ -56,11 +59,12 @@ export const StartGamePage: React.FC = observer(() => {
                 fontWeight: 500,
               }}
             >
-              {name}
+              {title}
             </Typography>
           )}
           <ButtonBase className={styles.button} onClick={handleStart}>
-            Начать
+            <span>{buttonText}</span>
+            <PlayArrow />
           </ButtonBase>
         </>
       )}

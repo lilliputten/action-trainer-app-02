@@ -32,7 +32,8 @@ export interface TDialogScreen {
 
 export type TDialogGame = {
   id: EDialogGameType;
-  name?: string;
+  title?: string;
+  omitStartGame?: boolean;
   startVideoUrl?: TUrl;
   defaultScreenId: TDialogScreenId;
   screens: TDialogScreen[];

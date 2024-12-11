@@ -43,16 +43,33 @@
 .curtain,
 .overContainer {
   position: absolute;
+  overflow: hidden;
+
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+
   left: 0;
   right: 0;
   top: 0;
   bottom: 0;
-  pointer-events: none;
-  opacity: 0;
+
   transition:
     all $transitionTimeMs,
     opacity $effectTimeMs,
     background $effectTimeMs;
+
+  pointer-events: none;
+  opacity: 0;
+
+  .DEBUG &,
+  .videoComplete & {
+    opacity: 1;
+    pointer-events: all;
+    // background-color: color.change($videoBgColor, $alpha: 0.5);
+  }
 }
 
 .overBox {
@@ -67,29 +84,8 @@
   }
 }
 
-.overContainer {
-  padding: 2em;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: stretch;
-  flex: 1;
-  overflow: hidden;
-  opacity: 0;
-  pointer-events: none;
-  .DEBUG &,
-  .videoComplete & {
-    opacity: 1;
-    pointer-events: all;
-    // background-color: color.change(black, $alpha: 0.85);
-    background-color: $videoBgColor;
-    // background: $videoBgGradient;
-  }
-}
-
 .curtain {
   background-color: $videoBgColor;
-  // background: $videoBgGradient;
   opacity: 1;
   pointer-events: all;
   .active & {
@@ -99,12 +95,16 @@
 }
 
 .overButtons {
-  display: flex;
-  gap: 2vw;
-  flex-direction: column;
-  justify-content: center;
-  align-items: stretch;
-  // padding: 2vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  // display: flex;
+  // gap: 2vw;
+  // flex-direction: column;
+  // justify-content: center;
+  // align-items: stretch;
 }
 
 $buttonBorderWidth: 1vw;
@@ -115,42 +115,80 @@ $textShadowSize: 0.2vw;
 .answerButton {
   &:global(.MuiButtonBase-root) {
     overflow: hidden;
-    &:before {
-      background: linear-gradient(165deg, transparent 0%, color.change(black, $alpha: 0.5) 100%);
-      content: '';
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      opacity: 0.5;
-      transition: all $transitionTimeMs;
-    }
+    position: absolute;
+    border-style: dashed;
+    // border: 0.5vw solid color.change(white, $alpha: 0.8);
+    border-radius: 2vw;
+    border-width: 1vw;
+    border-color: transparent; // color.change(white, $alpha: 0.8);
     transition: all $transitionTimeMs;
     // font-size: 3vw;
     font-size: 75%;
     $bgColor: $videoBlueColor;
-    background-color: $bgColor;
-    border: 0.5vw solid color.change(white, $alpha: 0.8);
-    border-radius: 2vw;
-    color: white; // color.mix(white, $videoRedColor, 100%);
-    text-shadow: $textShadowSize $textShadowSize color.change(black, $alpha: 0.4);
-    padding: 2vw 5vw;
-    box-shadow:
-      0.4vw 0.4vw 0 0.4vw color.change(black, $alpha: 0.3),
-      inset 0.2vw 0.2vw 0 0.4vw color.change(black, $alpha: 0.2);
+    background-color: transparent; // $bgColor;
+    // color: transparent; // color.mix(white, $videoRedColor, 100%);
+    // text-shadow: $textShadowSize $textShadowSize color.change(black, $alpha: 0.4);
+    // padding: 2vw 5vw;
+    // box-shadow:
+    //   0.4vw 0.4vw 0 0.4vw color.change(black, $alpha: 0.3),
+    //   inset 0.2vw 0.2vw 0 0.4vw color.change(black, $alpha: 0.2);
     opacity: 0.8;
-
+    // &:before {
+    //   // background: linear-gradient(165deg, transparent 0%, color.change(black, $alpha: 0.5) 100%);
+    //   content: '';
+    //   position: absolute;
+    //   left: 0;
+    //   right: 0;
+    //   top: 0;
+    //   bottom: 0;
+    //   opacity: 0.5;
+    //   transition: all $transitionTimeMs;
+    // }
+    pointer-events: none;
+    .videoComplete:not(.answered) & {
+      pointer-events: all;
+    }
+    .DEBUG &:global(.MuiButtonBase-root), // DEBUG: Show all frames
     &:hover {
+      border-style: dashed;
+      border-color: color.change($videoBlueColor, $alpha: 0.5);
+    }
+    &:hover,
+    &.selected {
+      .videoEffectComplete & {
+        backdrop-filter: $buttonHoverFilters;
+      }
       opacity: 1;
-      &:before {
-        opacity: 0.3;
+      // &:before {
+      //   opacity: 0.3;
+      // }
+    }
+    .videoComplete.answered & {
+      &:not(.correct) {
+        background-color: color.change(#f00, $alpha: 0.4);
+      }
+    }
+    &.correct {
+      border-style: dashed;
+      border-color: color.change($successColor, $alpha: 1);
+      backdrop-filter: $buttonHoverFilters;
+    }
+    &.selected {
+      border-style: solid;
+      border-color: color.change(#f00, $alpha: 1);
+      &.correct {
+        border-style: solid;
+        border-color: color.change($successColor, $alpha: 1);
       }
     }
     &:active {
-      &:before {
-        opacity: 0.8;
+      // backdrop-filter: $buttonBlurFilters;
+      &:hover {
+        backdrop-filter: $buttonHoverFilters; // $buttonBlurFilters;
       }
+      // &:before {
+      //   opacity: 0.8;
+      // }
     }
   }
 }
@@ -170,7 +208,7 @@ $textShadowSize: 0.4vmin;
 // Markdown content
 .showQuestion,
 .showQuote,
-.answerText,
+// .answerText,
 .showComment {
   color: #fff;
   // font-size: 5vmin;
@@ -185,7 +223,7 @@ $textShadowSize: 0.4vmin;
 .showComment {
   // text-shadow: $textShadowSize $textShadowSize color.change(black, $alpha: 0.4);
   font-size: 80%;
-  color: $videoBlueColor;
+  color: black; // $videoBlueColor;
 }
 .showQuote {
   // $bgColor: $videoBlueColor;
@@ -218,7 +256,6 @@ $textShadowSize: 0.4vmin;
 
 .finalButton {
   &:global(.MuiButtonBase-root) {
-    overflow: hidden;
     &:before {
       background: linear-gradient(165deg, transparent 0%, color.change(black, $alpha: 0.5) 100%);
       content: '';
@@ -230,14 +267,17 @@ $textShadowSize: 0.4vmin;
       opacity: 0.5;
       transition: all $transitionTimeMs;
     }
+    display: flex;
+    gap: 1vw;
+    overflow: hidden;
     transition: all $transitionTimeMs;
     $bgColor: $videoBlueColor;
     background-color: $bgColor;
     border-style: solid;
     border-color: color.change(white, $alpha: 0.8);
-    font-size: 5vmin;
+    font-size: 4vw;
     color: color.mix(white, $bgColor, 100%);
-    text-shadow: $textShadowSize $textShadowSize color.change(black, $alpha: 0.4);
+    // text-shadow: $textShadowSize $textShadowSize color.change(black, $alpha: 0.4);
     padding: 2vmin 4vmin;
     border-radius: 10vmin;
     box-shadow:
@@ -247,10 +287,12 @@ $textShadowSize: 0.4vmin;
     &:hover {
       opacity: 1;
       &:before {
-        // opacity: 0.3;
+        opacity: 0.3;
       }
     }
     &:active {
+      box-shadow:
+        0.5vw 0.5vw 0 0 color.change(black, $alpha: 0.5);
       &:before {
         opacity: 0.8;
       }

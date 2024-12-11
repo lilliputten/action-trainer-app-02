@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { Box, ButtonBase, Stack } from '@mui/material';
+import { Replay } from '@mui/icons-material';
 import classNames from 'classnames';
 
 import { effectTime } from 'src/core/assets/scss';
@@ -25,7 +26,8 @@ export const GameFinishedPage: React.FC = observer(() => {
       <Stack spacing="8vw" alignItems="center">
         <Box className={classNames(styles.title)}>Диалог завершён</Box>
         <ButtonBase className={classNames(styles.button)} onClick={handleStart}>
-          Начать заново
+          <Replay />
+          <span>Начать заново</span>
         </ButtonBase>
         <Box className={classNames(styles.curtain)}></Box>
       </Stack>

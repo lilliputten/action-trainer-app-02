@@ -8,9 +8,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const CracoEnvPlugin = require('craco-plugin-env');
 const CopyPlugin = require('copy-webpack-plugin');
 
-// const HtmlWebpackPlugin = require('html-webpack-plugin');
-// const HtmlBeautifyPlugin = require('html-beautify-webpack-plugin');
-const BeautifyHtmlWebpackPlugin = require( '@sumotto/beautify-html-webpack-plugin' );
+const BeautifyHtmlWebpackPlugin = require('@sumotto/beautify-html-webpack-plugin');
 
 const webpack = require('webpack');
 
