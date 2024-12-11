@@ -9,8 +9,8 @@
 /coverage
 
 # production
-/build
-/publish
+/build*
+/publish*
 .gitmodules
 
 # misc
