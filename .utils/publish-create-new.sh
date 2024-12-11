@@ -1,6 +1,6 @@
 #!/bin/sh
 # @desc Initialize publish syncing repository
-# @changed 2024.12.11, 02:49
+# @changed 2024.12.11, 18:52
 
 scriptsPath=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")
 rootPath=`dirname "$scriptsPath"`
@@ -16,8 +16,7 @@ test -f "$rootPath/config-check.sh" && . "$rootPath/config-check.sh" --omit-publ
 # Publish folder should be absent...
 . "$scriptsPath/publish-check-absent-folder.sh"
 
-echo "Initializing publish folder & submodule '$PUBLISH_FOLDER' for '$PUBLISH_BRANCH'..."
-exit 1
+echo "Initializing publish folder & submodule '$PUBLISH_FOLDER' (for '$PUBLISH_BRANCH' branch)..."
 
 DIST_REPO=`git config --get remote.origin.url`
 
@@ -26,11 +25,15 @@ touch ".gitmodules" && \
   git submodule add -f "$DIST_REPO" "$PUBLISH_FOLDER" && \
   git rm --cached -f "$PUBLISH_FOLDER" ".gitmodules" && \
   test ! -z "$PUBLISH_BRANCH" && ( \
-    echo "Switch to branch '$PUBLISH_BRANCH' ..." && \
     cd "$PUBLISH_FOLDER" && \
+    echo "Creating orhpaned branch '$PUBLISH_BRANCH'..." && \
     git checkout --orphan "$PUBLISH_BRANCH" && \
-    git rm -rf * && \
+    echo "Cleaning up exsting files..." && \
+    git rm -rf ".*" && \
+    git rm -rf "*" && \
+    echo "Commiting..." && \
     git commit -a --allow-empty -m "Initial orphaned $PUBLISH_BRANCH branch" && \
+    echo "Pushing..." && \
     git push --set-upstream origin "$PUBLISH_BRANCH" && \
     cd .. \
   ) && \

@@ -14,14 +14,7 @@ test -f "$scriptsPath/config-local.sh" && . "$scriptsPath/config-local.sh"
 test -f "$rootPath/config-check.sh" && . "$rootPath/config-check.sh" --omit-publish-folder-check
 
 # Publish folder should be absent...
-if [ -d "$PUBLISH_FOLDER" ]; then
-  echo "Publish folder already exists!"
-  echo "Remove it first for re-initializing using command:"
-  echo "'rm -Rf "$PUBLISH_FOLDER" ".gitmodules" ".git/modules/$PUBLISH_FOLDER"'"
-  echo "or"
-  echo "'sh utils/publish-uninit.sh'."
-  exit # Successfull exit
-fi
+. "$scriptsPath/publish-check-absent-folder.sh"
 
 echo "Initializing publish folder & submodule for '$PUBLISH_FOLDER'..."
 
