@@ -22,6 +22,7 @@ export interface TDialogScreen {
   showComment?: string;
   // finalImage?: TUrl;
   goTo?: TDialogScreenId;
+  autoContinue?: boolean;
   answersSx?: SxProps;
   textsSx?: SxProps;
   showQuestionSx?: SxProps;

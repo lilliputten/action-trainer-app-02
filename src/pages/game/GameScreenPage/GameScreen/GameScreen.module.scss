@@ -24,6 +24,9 @@
   justify-content: center;
   align-items: center;
   gap: 1em;
+  a {
+    color: $videoRedColor;
+  }
 }
 
 .video {
@@ -278,11 +281,11 @@ $textShadowSize: 0.4vmin;
     font-size: 4vw;
     color: color.mix(white, $bgColor, 100%);
     // text-shadow: $textShadowSize $textShadowSize color.change(black, $alpha: 0.4);
-    padding: 2vmin 4vmin;
+    padding: 2vw 4vw;
     border-radius: 10vmin;
     box-shadow:
-      0.2vmin 0.2vmin 0 0.3vmin color.change(black, $alpha: 0.3),
-      inset 0.1vmin 0.1vmin 0 0.2vmin color.change(black, $alpha: 0.2);
+      0.2vw 0.2vw 0 0.3vw color.change(black, $alpha: 0.3),
+      inset 0.1vw 0.1vw 0 0.2vw color.change(black, $alpha: 0.2);
     opacity: 0.8;
     &:hover {
       opacity: 1;
@@ -292,7 +295,7 @@ $textShadowSize: 0.4vmin;
     }
     &:active {
       box-shadow:
-        0.5vw 0.5vw 0 0 color.change(black, $alpha: 0.5);
+        0.2vw 0.2vw 0 0 color.change(black, $alpha: 0.6);
       &:before {
         opacity: 0.8;
       }

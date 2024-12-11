@@ -61,8 +61,8 @@ $textShadowSize: 0.4vw;
     padding: 2vw 5vw;
     border-radius: 10vw;
     box-shadow:
-      0.2vw 0.2vw 0 0.2vw color.change(black, $alpha: 0.3),
-      inset 0.1vw 0.1vw 0 0.2vw color.change(black, $alpha: 0.2);
+      0.2vmin 0.2vmin 0 0.3vmin color.change(black, $alpha: 0.3),
+      inset 0.1vmin 0.1vmin 0 0.2vmin color.change(black, $alpha: 0.2);
     opacity: 0.8;
     &:hover {
       opacity: 1;
