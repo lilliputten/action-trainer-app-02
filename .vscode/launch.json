@@ -1,0 +1,104 @@
+// ex: set ft=jsonc :
+// @changed 2024.12.11, 08:56
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit:
+  // https://code.visualstudio.com/docs/editor/debugging#_launch-configurations
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch Chrome",
+      "request": "launch",
+      "type": "chrome",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "name": "Attach to Chrome",
+      "port": 9222,
+      "request": "attach",
+      "type": "chrome",
+      "urlFilter": "http://localhost:3000/*", // use urlFilter instead of url!
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "name": "custom script: switch-scenario",
+      "program": "${workspaceFolder}/switch-scenario.js",
+      "args": [
+        "--replace",
+        "XXX"
+      ],
+      "type": "node",
+      "request": "launch",
+      // "externalConsole": true,
+      "runtimeExecutable": "node"
+    },
+    {
+      "name": "current javascript file",
+      "program": "${file}",
+      "args": [
+        // "--help",
+      ],
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "node"
+    },
+    {
+      "name": "current typescript",
+      "program": "${file}",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "tsx"
+    },
+    {
+      "name": "Node: gulp",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceRoot}/node_modules/gulp/bin/gulp.js",
+      "console": "integratedTerminal",
+      "args": ["build"]
+    },
+    {
+      "name": "Node: webpack",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceRoot}/node_modules/gulp/bin/gulp.js",
+      "console": "integratedTerminal",
+      "args": ["build"]
+    },
+    {
+      "name": "Run jest test",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm exec jest deleteRecordWithChidren.test"
+    },
+    {
+      "name": "Next.js: debug server-side",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "pnpm run dev"
+    },
+    {
+      "name": "Next.js: debug client-side",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:3000"
+    },
+    {
+      "name": "Next.js: debug full stack",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/next",
+      "runtimeArgs": ["--inspect"],
+      "skipFiles": ["<node_internals>/**"],
+      "serverReadyAction": {
+        "action": "debugWithEdge",
+        "killOnServerStop": true,
+        "pattern": "- Local:.+(https?://.+)",
+        "uriFormat": "%s",
+        "webRoot": "${workspaceFolder}"
+      }
+    }
+  ]
+}

@@ -76,7 +76,7 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
   // const finalImageSize = videoContainerWidth && videoContainerWidth / 5;
   const refBox = React.useRef<HTMLDivElement>(null);
   /** Video has already played */
-  const [videoComplete, setVideoComplete] = React.useState<boolean>(!hasVideo || doDebug);
+  const [videoComplete, setVideoComplete] = React.useState<boolean>(!hasVideo /* || doDebug */);
   const [isVideoStarted, setVideoStarted] = React.useState(false);
   /** After video effect has finished */
   const [videoEffectComplete, setVideoEffectComplete] = React.useState(false);
@@ -90,51 +90,44 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
   const isAnswered = videoComplete && (!hasAnswers || answerIdx != null);
   // const [hasNavigated, setHasNavigated] = React.useState(false);
   // const [hasInited, setInited] = React.useState(false);
-  // DEBUG
-  React.useEffect(() => {
-    console.log('[GameScreen:DEBUG]', {
-      gameId,
-      screenId,
-      screenData,
-      hasAnswers,
-      videoComplete,
-      isVideoStarted,
-      videoEffectComplete,
-      isCanPlay,
-      isActive,
-      isFinished,
-      isFinishedComplete,
-    });
-  }, [
-    // prettier-ignore
-    gameId,
-    screenId,
-    screenData,
-    hasAnswers,
-    videoComplete,
-    isVideoStarted,
-    videoEffectComplete,
-    isCanPlay,
-    isActive,
-    isFinished,
-    isFinishedComplete,
-  ]);
+  /* // DEBUG
+   * React.useEffect(() => {
+   *   console.log('[GameScreen:DEBUG]', {
+   *     gameId,
+   *     screenId,
+   *     screenData,
+   *     hasAnswers,
+   *     videoComplete,
+   *     isVideoStarted,
+   *     videoEffectComplete,
+   *     isCanPlay,
+   *     isActive,
+   *     isFinished,
+   *     isFinishedComplete,
+   *   });
+   * }, [
+   *   // prettier-ignore
+   *   gameId,
+   *   screenId,
+   *   screenData,
+   *   hasAnswers,
+   *   videoComplete,
+   *   isVideoStarted,
+   *   videoEffectComplete,
+   *   isCanPlay,
+   *   isActive,
+   *   isFinished,
+   *   isFinishedComplete,
+   * ]);
+   */
   // Update geometry...
   const updateBoxGeometry = React.useCallback(() => {
     const box = refBox.current;
     if (box) {
       const { width, height } = getVideoSizeByRef(refVideo);
-      /* console.log('[updateBoxGeometry]', {
-       *   width,
-       *   height,
-       *   box,
-       *   // videoContainerWidth,
-       *   // videoContainerHeight,
-       * });
-       */
       if (width && height) {
-        box.style.width = px(width);
-        box.style.height = px(height);
+        box.style.width = px(width, { important: false });
+        box.style.height = px(height, { important: false });
       }
     }
   }, [
@@ -244,7 +237,7 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
         answerIdx,
       });
       setAnswerIdx(answerIdx);
-      handleFinalButtonClick();
+      setTimeout(handleFinalButtonClick, 3000);
     },
     [handleFinalButtonClick],
   );
@@ -292,7 +285,7 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
   // Generate action buttons using `handleUserChoice`
   const answerButtons = React.useMemo(() => {
     return answers?.map((item, idx) => {
-      const { text, buttonSx } = item;
+      const { text, isCorrect, buttonSx } = item;
       const key = ['answer-button', idx].join('-');
       const isSelected = answerIdx === idx;
       const sx = { ...answersSx, ...buttonSx } as SxProps;
@@ -304,14 +297,17 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
             styles.answerButton,
             isSelected && styles.selected,
             isAnswered && styles.answered, // isCorrect && styles.correct,
+            isAnswered && isCorrect && styles.correct,
           )}
           onClick={handleUserChoice}
           sx={sx}
-          // title={text}
+          title={text}
         >
+          {/*
           <span className={styles.answerText}>
             <Markdown>{text}</Markdown>
           </span>
+          */}
         </ButtonBase>
       );
     });
@@ -325,6 +321,12 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
     // buttonBorderWidth,
     // buttonBorderRadius,
   ]);
+  const skipVideo = React.useCallback(() => {
+    const video = refVideo.current;
+    if (video) {
+      video.currentTime = video.duration - 1;
+    }
+  }, [refVideo]);
   const showContent = !!(showQuote || showComment || showQuestion || showFinalButton);
   if (error) {
     return <ShowError error={error} />;
@@ -342,6 +344,8 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
         isFinishedComplete && styles.finishedComplete,
         doDebug && styles.DEBUG,
       )}
+      skipVideo={skipVideo}
+      videoComplete={videoComplete}
     >
       {!isFinishedComplete && (
         <video
@@ -428,7 +432,7 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
                         // marginTop: '0.2em',
                       }}
                     >
-                      {finalButtonText}
+                      <span>{finalButtonText}</span>
                       <PlayArrow />
                     </ButtonBase>
                   )}

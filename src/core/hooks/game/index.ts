@@ -1,1 +1,2 @@
-export * from './useGameName';
+export * from './useGameData';
+export * from './useGameTitle';

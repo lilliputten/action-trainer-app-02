@@ -7,7 +7,7 @@ import { TDialogScreenId } from './TDialogScreenId';
 
 export interface TDialogAnswer {
   text?: string;
-  // isCorrect?: boolean;
+  isCorrect?: boolean;
   buttonSx?: SxProps;
   goTo?: TDialogScreenId;
 }
@@ -32,7 +32,8 @@ export interface TDialogScreen {
 
 export type TDialogGame = {
   id: EDialogGameType;
-  name?: string;
+  title?: string;
+  omitStartGame?: boolean;
   startVideoUrl?: TUrl;
   defaultScreenId: TDialogScreenId;
   screens: TDialogScreen[];

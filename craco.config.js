@@ -1,9 +1,26 @@
 // @ts-check
 
+const fs = require('fs');
+const path = require('path');
+
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const CracoEnvPlugin = require('craco-plugin-env');
+const CopyPlugin = require('copy-webpack-plugin');
 
+const BeautifyHtmlWebpackPlugin = require('@sumotto/beautify-html-webpack-plugin');
+
+const webpack = require('webpack');
+
+const rootPath = path.resolve(__dirname).replace(/\\/g, '/');
+
+/** Scenario id file */
+const scenarioIdFile = 'project-scenario-id.txt';
+
+/** Current scenario id */
+const scenarioId = fs.readFileSync(path.posix.join(rootPath, scenarioIdFile), 'utf8').trim();
+
+/** To use analyzer? */
 const startAnalyzer = !!process.env.START_ANALYZER;
 
 const cracoConfig = {
@@ -32,6 +49,19 @@ const cracoConfig = {
   webpack: {
     plugins: {
       add: [
+        new webpack.DefinePlugin({
+          'process.env.SCENARIO_ID': JSON.stringify(scenarioId),
+        }),
+        new CopyPlugin({
+          patterns: [
+            // Copy videos
+            { from: `${rootPath}/scenarios-data/${scenarioId}`, to: 'scenario-data' },
+            // Copy project info
+            { from: `${rootPath}/project-info.txt`, to: '' },
+          ],
+        }),
+        // Prettify html
+        new BeautifyHtmlWebpackPlugin(),
         // Enable core nodejs polyfills (like 'buffer' etc) for webpack 5
         new NodePolyfillPlugin(),
         // Build analyzer
@@ -40,27 +70,9 @@ const cracoConfig = {
             // @see: https://www.npmjs.com/package/webpack-bundle-analyzer#options-for-plugin
             analyzerMode: 'server',
           }),
-        /* // This doesn't work: can't get parameters in the code
-         * new webpack.DefinePlugin(
-         *   Object.entries(buildInfo).reduce((data, [key, val]) => {
-         *     data['process.env.' + key] = JSON.stringify(val);
-         *     return data;
-         *   }, {}),
-         * ),
-         */
       ].filter(Boolean),
     },
   },
 };
-
-/* // This doesn't work: can't get parameters in the code
- * const extendedConfig = overrideCracoConfig({
- *   cracoConfig,
- *   pluginOptions: {
- *     variables: { ...buildInfo },
- *   },
- * });
- * module.exports = extendedConfig;
- */
 
 module.exports = cracoConfig;
