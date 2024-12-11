@@ -1,0 +1,262 @@
+.root {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  overflow: hidden;
+  transition: background $transitionTimeMs;
+}
+
+.DEBUG,
+.finishedComplete,
+.overButtons,
+.active,
+.finished,
+.answered {
+  /*!KEEP*/
+}
+
+.overContent {
+  // Texts container
+  margin: 0;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+}
+
+.video {
+  outline: unset;
+  border: none;
+  clip-path: inset(0px);
+  object-fit: contain;
+  transition: opacity $transitionTimeMs;
+  opacity: 1;
+  .videoComplete & {
+    opacity: 0.8;
+  }
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.curtain,
+.overContainer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition:
+    all $transitionTimeMs,
+    opacity $effectTimeMs,
+    background $effectTimeMs;
+}
+
+.overBox {
+  position: relative;
+  display: flex;
+  gap: 1em;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .DEBUG & {
+    border: 2px dashed red; // DEBUG
+  }
+}
+
+.overContainer {
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  flex: 1;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  .DEBUG &,
+  .videoComplete & {
+    opacity: 1;
+    pointer-events: all;
+    // background-color: color.change(black, $alpha: 0.85);
+    background-color: $videoBgColor;
+    // background: $videoBgGradient;
+  }
+}
+
+.curtain {
+  background-color: $videoBgColor;
+  // background: $videoBgGradient;
+  opacity: 1;
+  pointer-events: all;
+  .active & {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+.overButtons {
+  display: flex;
+  gap: 2vw;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  // padding: 2vw;
+}
+
+$buttonBorderWidth: 1vw;
+$buttonHoverFilters: brightness(110%) contrast(110%);
+$buttonBlurFilters: blur(0.2vw);
+$textShadowSize: 0.2vw;
+
+.answerButton {
+  &:global(.MuiButtonBase-root) {
+    overflow: hidden;
+    &:before {
+      background: linear-gradient(165deg, transparent 0%, color.change(black, $alpha: 0.5) 100%);
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      opacity: 0.5;
+      transition: all $transitionTimeMs;
+    }
+    transition: all $transitionTimeMs;
+    // font-size: 3vw;
+    font-size: 75%;
+    $bgColor: $videoBlueColor;
+    background-color: $bgColor;
+    border: 0.5vw solid color.change(white, $alpha: 0.8);
+    border-radius: 2vw;
+    color: white; // color.mix(white, $videoRedColor, 100%);
+    text-shadow: $textShadowSize $textShadowSize color.change(black, $alpha: 0.4);
+    padding: 2vw 5vw;
+    box-shadow:
+      0.4vw 0.4vw 0 0.4vw color.change(black, $alpha: 0.3),
+      inset 0.2vw 0.2vw 0 0.4vw color.change(black, $alpha: 0.2);
+    opacity: 0.8;
+
+    &:hover {
+      opacity: 1;
+      &:before {
+        opacity: 0.3;
+      }
+    }
+    &:active {
+      &:before {
+        opacity: 0.8;
+      }
+    }
+  }
+}
+
+$textShadowSize: 0.4vmin;
+
+.finalImage {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.showTexts {
+  gap: 1em;
+}
+
+// Markdown content
+.showQuestion,
+.showQuote,
+.answerText,
+.showComment {
+  color: #fff;
+  // font-size: 5vmin;
+  p {
+    margin: 0.3em 0;
+  }
+  em {
+    opacity: 0.5;
+  }
+}
+
+.showComment {
+  // text-shadow: $textShadowSize $textShadowSize color.change(black, $alpha: 0.4);
+  font-size: 80%;
+  color: $videoBlueColor;
+}
+.showQuote {
+  // $bgColor: $videoBlueColor;
+  $bgColor: color.change(#fff, $alpha: 1);
+  background-color: $bgColor;
+  // color: #fff;
+  // color: $videoBlueColor;
+  color: #000;
+  // font-weight: 600;
+  // text-shadow: $textShadowSize $textShadowSize color.change(black, $alpha: 0.4);
+  padding: 3vmin 4vmin;
+  border-radius: 4vmin;
+  box-shadow: 0.4vmin 0.4vmin 0 0.3vmin color.change(black, $alpha: 0.3);
+  // inset 0.1vmin 0.1vmin 0 0.2vmin color.change(black, $alpha: 0.2);
+  opacity: 0.6;
+  position: relative;
+  &::before {
+    left: -0.9em;
+    bottom: 1em;
+    border-top: 0.5em solid transparent;
+    border-bottom: 0.5em solid transparent;
+    border-right: 1em solid $bgColor;
+    box-sizing: border-box;
+    content: '';
+    width: 0;
+    height: 0;
+    position: absolute;
+  }
+}
+
+.finalButton {
+  &:global(.MuiButtonBase-root) {
+    overflow: hidden;
+    &:before {
+      background: linear-gradient(165deg, transparent 0%, color.change(black, $alpha: 0.5) 100%);
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      opacity: 0.5;
+      transition: all $transitionTimeMs;
+    }
+    transition: all $transitionTimeMs;
+    $bgColor: $videoBlueColor;
+    background-color: $bgColor;
+    border-style: solid;
+    border-color: color.change(white, $alpha: 0.8);
+    font-size: 5vmin;
+    color: color.mix(white, $bgColor, 100%);
+    text-shadow: $textShadowSize $textShadowSize color.change(black, $alpha: 0.4);
+    padding: 2vmin 4vmin;
+    border-radius: 10vmin;
+    box-shadow:
+      0.2vmin 0.2vmin 0 0.3vmin color.change(black, $alpha: 0.3),
+      inset 0.1vmin 0.1vmin 0 0.2vmin color.change(black, $alpha: 0.2);
+    opacity: 0.8;
+    &:hover {
+      opacity: 1;
+      &:before {
+        // opacity: 0.3;
+      }
+    }
+    &:active {
+      &:before {
+        opacity: 0.8;
+      }
+    }
+    :global(.MuiSvgIcon-root) {
+      font-size: 1em;
+    }
+  }
+}
