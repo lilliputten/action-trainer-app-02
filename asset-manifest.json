@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "./static/css/main.58a7e568.css",
-    "main.js": "./static/js/main.642a3133.js",
-    "static/js/367.5a536ef8.chunk.js": "./static/js/367.5a536ef8.chunk.js",
+    "main.js": "./static/js/main.84516aa8.js",
+    "static/js/367.6b0d392d.chunk.js": "./static/js/367.6b0d392d.chunk.js",
     "scenario-data/videos/2_1.mp4": "./scenario-data/videos/2_1.mp4",
     "scenario-data/videos/1_1.mp4": "./scenario-data/videos/1_1.mp4",
     "scenario-data/videos/1_2.mp4": "./scenario-data/videos/1_2.mp4",
@@ -69,11 +69,11 @@
     "index.html": "./index.html",
     "project-info.txt": "./project-info.txt",
     "main.58a7e568.css.map": "./static/css/main.58a7e568.css.map",
-    "main.642a3133.js.map": "./static/js/main.642a3133.js.map",
-    "367.5a536ef8.chunk.js.map": "./static/js/367.5a536ef8.chunk.js.map"
+    "main.84516aa8.js.map": "./static/js/main.84516aa8.js.map",
+    "367.6b0d392d.chunk.js.map": "./static/js/367.6b0d392d.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.58a7e568.css",
-    "static/js/main.642a3133.js"
+    "static/js/main.84516aa8.js"
   ]
 }
