@@ -88,7 +88,7 @@ export const ScreenWrapper = observer<TProps, HTMLDivElement>(
                   <Replay />
                 </IconButton>
               )}
-              {!isRoot && hasVideo && !videoComplete && isDev && (
+              {!isRoot && hasVideo && !videoComplete && (
                 <IconButton
                   // component={RouterLinkComponent}
                   // to={`/game/${gameId}`}

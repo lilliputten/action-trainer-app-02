@@ -19,7 +19,7 @@ VERSION=`cat "$VERSION_PATH"`
 TIMESTAMP=`date -r "$VERSION_PATH" "+%Y.%m.%d %H:%M:%S %z"`
 TIMETAG=`date -r "$VERSION_PATH" "+%y%m%d-%H%M"`
 
-SCENARIO_ID=`cat "$rootPath/$SCENARIO_ID_FILE"`
+# SCENARIO_ID=`cat "$rootPath/$SCENARIO_ID_FILE"`
 
 PROJECT_INFO="v.$VERSION / $SCENARIO_ID / $TIMESTAMP"
 PROJECT_INFO_REP=`echo "$PROJECT_INFO" | sed 's,/,\\\\/,g'` # Quoted for replace, see below

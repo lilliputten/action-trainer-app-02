@@ -21,7 +21,7 @@ PROJECT_INFO=`cat "$rootPath/$PROJECT_INFO_FILE"`
 
 echo "Publishing build $PROJECT_INFO..."
 
-TAG_VALUE="$PUBLISH_BRANCH.$VERSION"
+TAG_VALUE="$PUBLISH_BRANCH-v.$VERSION"
 COMMIT_TEXT="Build $TAG_VALUE, $TIMESTAMP ($TIMETAG)"
 cd "$PUBLISH_FOLDER" && \
   echo "Create/update tag $TAG_VALUE..." && git tag -f -am "$COMMIT_TEXT" "$TAG_VALUE" && \
