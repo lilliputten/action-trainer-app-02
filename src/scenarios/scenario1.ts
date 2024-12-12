@@ -43,7 +43,7 @@ export const dialogGamesList: TDialogGame[] = [
       },
       {
         id: '1_start',
-        showComment: 'Начнем с ситуации, когда **врач задерживается и пациент готов подождать**.',
+        showComment: 'Начнем с ситуации, когда **пациент пришел по записи**',
         showCommentSx: {
           fontSize: percent(130),
         },
@@ -60,14 +60,14 @@ export const dialogGamesList: TDialogGame[] = [
         answers: [
           {
             isCorrect: true,
-            text: 'А. Вера Сергеевна, доктор заканчивает прием другого пациента. Мы просим Вас подождать еще 10 минут. Хорошо? Будете чай, кофе? Пожалуйста, журналы для Вас!',
+            text: 'А.',
             buttonSx: {
               ...defaultAnswerSx,
               height: percent(30.5),
             },
           },
           {
-            text: 'Б. Вера Сергеевна, придется подождать несколько минут. Хорошо? Будете чай, кофе? Полистайте журналы.',
+            text: 'Б.',
             buttonSx: {
               ...defaultSecondAnswerSx,
               height: percent(25),
@@ -77,8 +77,7 @@ export const dialogGamesList: TDialogGame[] = [
       },
       {
         id: '1_1_resume',
-        showComment:
-          'Объясните причину задержки специалиста и вежливо предложите кофе, чай и журналы.',
+        showComment: '1_1_resume',
         showCommentSx: {
           fontSize: percent(130),
         },
@@ -93,7 +92,7 @@ export const dialogGamesList: TDialogGame[] = [
         },
         answers: [
           {
-            text: 'А. Врач вас ожидает. Можете идти.',
+            text: 'А.',
             buttonSx: {
               ...defaultAnswerSx,
               top: percent(27.5),
@@ -103,7 +102,7 @@ export const dialogGamesList: TDialogGame[] = [
           },
           {
             isCorrect: true,
-            text: 'Б. Проходите, пожалуйста, кабинет номер 3. Прямо по коридору и направо.',
+            text: 'Б.',
             buttonSx: {
               ...defaultSecondAnswerSx,
               top: percent(51),
@@ -115,8 +114,7 @@ export const dialogGamesList: TDialogGame[] = [
       },
       {
         id: '1_2_resume',
-        showComment:
-          'Если нет возможности проводить пациента – вежливо проговорите, как пройти к кабинету.',
+        showComment: '1_2_resume',
         showCommentSx: {
           fontSize: percent(130),
         },
@@ -130,8 +128,7 @@ export const dialogGamesList: TDialogGame[] = [
       },
       {
         id: '2_start',
-        showComment:
-          'Теперь рассмотрим более сложный случай: когда **врач задерживается и пациент не готов подождать**.',
+        showComment: '2_start',
         showCommentSx: {
           fontSize: percent(130),
         },
@@ -148,7 +145,7 @@ export const dialogGamesList: TDialogGame[] = [
         answers: [
           {
             isCorrect: true,
-            text: 'А. …Простите, пожалуйста! У Вас есть возможность подождать?',
+            text: 'А.',
             buttonSx: {
               ...defaultAnswerSx,
               top: percent(27.5),
@@ -157,7 +154,7 @@ export const dialogGamesList: TDialogGame[] = [
             },
           },
           {
-            text: 'Б. …Вам нужно подождать.',
+            text: 'Б.',
             buttonSx: {
               ...defaultSecondAnswerSx,
               top: percent(51),
@@ -176,7 +173,7 @@ export const dialogGamesList: TDialogGame[] = [
         },
         answers: [
           {
-            text: 'А. …Приходите к нам в другой раз. Такие случаи – редкость. Больше не повторится.',
+            text: 'А.',
             buttonSx: {
               ...defaultAnswerSx,
               top: percent(25),
@@ -186,7 +183,7 @@ export const dialogGamesList: TDialogGame[] = [
           },
           {
             isCorrect: true,
-            text: 'Б. Проходите, пожалуйста, кабинет номер 3. Прямо по коридору и направоБ. Могу я предложить Вам записаться на другой день? Мы подберем максимально удобное для Вас время.',
+            text: 'Б.',
             buttonSx: {
               ...defaultSecondAnswerSx,
               top: percent(48.5),
@@ -198,8 +195,7 @@ export const dialogGamesList: TDialogGame[] = [
       },
       {
         id: '2_2_resume',
-        showComment:
-          'Разговаривайте вежливо. Предложите пациенту запись на другой день. Не гарантируйте того, что не можете точно знать.',
+        showComment: '2_2',
         showCommentSx: {
           fontSize: percent(130),
         },
