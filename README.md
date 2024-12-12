@@ -3,11 +3,11 @@
 @changed 2024.06.05, 23:18
 -->
 
-# action-dialog-trainer-2409
+# action-trainer-app-02
 
 Action trainer app.
 
-- Project info: v.0.0.1 / scenario1 / 2024.12.11 11:25:44 +0300
+- Project info: v.0.0.3 / scenario2 / 2024.12.11 19:27:51 +0300
 
 TODO: Add the project description.
 
@@ -18,11 +18,17 @@ TODO: Add the project description.
 
 ## Resources
 
-Repository: https://github.com/lilliputten/action-dialog-trainer-2409
+Repository: https://github.com/lilliputten/action-trainer-app-02
 
-Demo deploy server (with a recent build): https://action-dialog-trainer-2409.march.team/
+Demo deploy server (with a recent build):
 
-Demo in a frame: https://action-dialog-trainer-2409.march.team/frame-test
+- Scenario 1: https://action-trainer-app-02.march.team/scenario1
+- Scenario 2: https://action-trainer-app-02.march.team/scenario2
+
+Demo in a frame:
+
+- Scenario 1: https://action-trainer-app-02.march.team/scenario1/frame-test
+- Scenario 2: https://action-trainer-app-02.march.team/scenario2/frame-test
 
 ## Project workflow
 

@@ -93,8 +93,7 @@ $textShadowSize: 0.3vw;
       }
     }
     &:active {
-      box-shadow:
-        0.5vw 0.5vw 0 0 color.change(black, $alpha: 0.5);
+      box-shadow: 0.5vw 0.5vw 0 0 color.change(black, $alpha: 0.5);
       &:before {
         opacity: 0.8;
       }

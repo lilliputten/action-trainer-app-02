@@ -6,15 +6,17 @@
 IS_WINDOWS=`echo "${OS}" | grep -i windows`
 IS_CYGWIN=`uname | grep -i "CYGWIN"`
 
-# Project structure setup
-BUILD_FOLDER="dist"
-# PUBLIC_FOLDER="public"
-PUBLISH_FOLDER="publish"
-PUBLISH_BRANCH="publish"
-# DIST_REPO comes from the actual git configuration
-
 # An extra parameter to define current project profile
 SCENARIO_ID_FILE="project-scenario-id.txt"
+
+SCENARIO_ID=`cat "$rootPath/$SCENARIO_ID_FILE"`
+
+# Project structure setup
+BUILD_FOLDER="build"
+# PUBLIC_FOLDER="public"
+PUBLISH_FOLDER="publish-${SCENARIO_ID}"
+PUBLISH_BRANCH="publish-${SCENARIO_ID}"
+# DIST_REPO comes from the actual git configuration
 
 VERSION_FILE="project-version.txt"
 PROJECT_INFO_FILE="project-info.txt"

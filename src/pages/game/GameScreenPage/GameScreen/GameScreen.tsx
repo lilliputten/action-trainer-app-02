@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 import { Box, ButtonBase, Stack, SxProps } from '@mui/material';
-import { PlayArrow } from '@mui/icons-material';
+import { Replay, PlayArrow } from '@mui/icons-material';
 import Markdown from 'react-markdown';
 
 import { isDev } from 'src/core/constants/config';
@@ -21,6 +21,8 @@ import styles from './GameScreen.module.scss';
 
 const doDebug = isDev && false;
 const testingAnswerLayouts = isDev && false;
+
+const answerWaitDelay = 3000;
 
 type TGameScreenProps = TScreenData & TPropsWithClassName;
 
@@ -41,13 +43,13 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
   // Get game data...
   const {
     id,
-    // prettier-ignore
     videoUrl,
     answers,
     showComment,
     showQuote,
     showQuestion,
     goTo: screenGoTo,
+    autoContinue,
     answersSx,
     textsSx,
     showQuestionSx,
@@ -61,7 +63,8 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
   // const screensCount = scenarioData.screens.length;
   const isLastScreen = !screenGoTo && !hasAnswers; // screenNo === screensCount;
   const showFinalButton = !hasAnswers;
-  const finalButtonText = isLastScreen ? 'Завершить' : buttonText;
+  const isFinal = id === 'final';
+  const finalButtonText = isLastScreen ? (isFinal ? 'Начать заново' : 'Завершить') : buttonText;
   // Initialize video ref (to update geometry)...
   const {
     ref: refVideo,
@@ -223,7 +226,7 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
   /** Final action */
   // React.MouseEventHandler<HTMLButtonElement>
   const handleFinalButtonClick = React.useCallback(() => {
-    console.log('[GameScreen:handleFinalButtonClick]');
+    // console.log('[GameScreen:handleFinalButtonClick]');
     setFinished(true);
     // TODO: Store an answer to the store for further analization?
     setTimeout(() => {
@@ -237,42 +240,36 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
         answerIdx,
       });
       setAnswerIdx(answerIdx);
-      setTimeout(handleFinalButtonClick, 3000);
+      setTimeout(handleFinalButtonClick, answerWaitDelay);
     },
     [handleFinalButtonClick],
   );
-  const finalRoute = React.useMemo(() => `/game/${gameId}/finished`, [gameId]);
   const computeNextScreenRoute = React.useCallback(() => {
     if (isLastScreen) {
-      return finalRoute;
+      return `/game/${gameId}/start`;
+      // return `/game/${gameId}/finished`;
     }
-    if (answers && answerIdx != null) {
-      const answer = answers[answerIdx];
-      const { goTo: answerGoTo } = answer;
-      if (!answerGoTo) {
-        return finalRoute;
-      }
-      return getNextScreenRoute(gameId, answerGoTo, true);
-    }
-    return getNextScreenRoute(gameId, screenGoTo, true);
+    const answerGoTo = answers && answerIdx != null && answers[answerIdx].goTo;
+    return answerGoTo || getNextScreenRoute(gameId, screenGoTo, true);
   }, [
     // prettier-ignore
     answerIdx,
     answers,
-    finalRoute,
+    // finalRoute,
     gameId,
     isLastScreen,
     screenGoTo,
   ]);
   React.useEffect(() => {
     const { hasNavigated } = memo;
+    const goToNext = !hasNavigated && isFinishedComplete && isAnswered;
     console.log('[GameScreen: All effects have finished: before]', {
+      goToNext,
       hasNavigated,
-      // isFinished,
       isFinishedComplete,
       isAnswered,
     });
-    if (!hasNavigated && isFinishedComplete && isAnswered) {
+    if (goToNext) {
       const nextScreenRoute = computeNextScreenRoute();
       console.log('[GameScreen: All effects have finished: navigate]', {
         nextScreenRoute,
@@ -280,8 +277,18 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
       // setHasNavigated(true);
       memo.hasNavigated = true;
       navigate(nextScreenRoute);
+    } else if (isAnswered && autoContinue) {
+      setTimeout(handleFinalButtonClick, answerWaitDelay);
     }
-  }, [computeNextScreenRoute, isAnswered, isFinishedComplete, memo, navigate]);
+  }, [
+    computeNextScreenRoute,
+    isAnswered,
+    autoContinue,
+    isFinishedComplete,
+    memo,
+    navigate,
+    handleFinalButtonClick,
+  ]);
   // Generate action buttons using `handleUserChoice`
   const answerButtons = React.useMemo(() => {
     return answers?.map((item, idx) => {
@@ -421,7 +428,7 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
                       </Box>
                     )}
                   </Stack>
-                  {showFinalButton && (
+                  {showFinalButton && !autoContinue && (
                     <ButtonBase
                       className={classNames(styles.finalButton)}
                       title={finalButtonText}
@@ -432,8 +439,9 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
                         // marginTop: '0.2em',
                       }}
                     >
+                      {isFinal && <Replay />}
                       <span>{finalButtonText}</span>
-                      <PlayArrow />
+                      {!isFinal && <PlayArrow />}
                     </ButtonBase>
                   )}
                 </>
