@@ -7,7 +7,7 @@
 
 Action trainer app.
 
-- Project info: v.0.0.3 / scenario2 / 2024.12.11 19:27:51 +0300
+- Project info: v.0.0.3 / scenario1 / 2024.12.12 23:47:51 +0300
 
 TODO: Add the project description.
 
