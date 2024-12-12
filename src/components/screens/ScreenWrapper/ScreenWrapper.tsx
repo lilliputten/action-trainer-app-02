@@ -14,7 +14,6 @@ import { useAppSessionStore } from 'src/store';
 import { LoaderSplash } from 'src/ui/Basic';
 import { ShowError } from 'src/components/app/ShowError';
 import { useScreenData } from 'src/core/hooks/routes';
-import { isDev } from 'src/core/constants/config';
 
 interface TProps extends TPropsWithChildrenAndClassName {
   ref?: React.ForwardedRef<HTMLDivElement>;

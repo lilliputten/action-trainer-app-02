@@ -236,9 +236,10 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
   const handleUserChoice = React.useCallback<React.MouseEventHandler<HTMLButtonElement>>(
     (event) => {
       const answerIdx = Number(event.currentTarget.id);
-      console.log('[GameScreen:handleUserChoice]', {
-        answerIdx,
-      });
+      /* console.log('[GameScreen:handleUserChoice]', {
+       *   answerIdx,
+       * });
+       */
       setAnswerIdx(answerIdx);
       setTimeout(handleFinalButtonClick, answerWaitDelay);
     },
@@ -263,17 +264,19 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
   React.useEffect(() => {
     const { hasNavigated } = memo;
     const goToNext = !hasNavigated && isFinishedComplete && isAnswered;
-    console.log('[GameScreen: All effects have finished: before]', {
-      goToNext,
-      hasNavigated,
-      isFinishedComplete,
-      isAnswered,
-    });
+    /* console.log('[GameScreen: All effects have finished: before]', {
+     *   goToNext,
+     *   hasNavigated,
+     *   isFinishedComplete,
+     *   isAnswered,
+     * });
+     */
     if (goToNext) {
       const nextScreenRoute = computeNextScreenRoute();
-      console.log('[GameScreen: All effects have finished: navigate]', {
-        nextScreenRoute,
-      });
+      /* console.log('[GameScreen: All effects have finished: navigate]', {
+       *   nextScreenRoute,
+       * });
+       */
       // setHasNavigated(true);
       memo.hasNavigated = true;
       navigate(nextScreenRoute);

@@ -26,6 +26,13 @@
   gap: 1em;
   a {
     color: $videoRedColor;
+    transition: opacity $transitionTimeMs;
+    opacity: 1;
+    text-decoration: none;
+    &:hover {
+      opacity: 0.8;
+      text-decoration: underline;
+    }
   }
 }
 
@@ -166,11 +173,6 @@ $textShadowSize: 0.2vw;
       //   opacity: 0.3;
       // }
     }
-    .videoComplete.answered & {
-      &:not(.correct) {
-        background-color: color.change(#f00, $alpha: 0.4);
-      }
-    }
     &.correct {
       border-style: dashed;
       border-color: color.change($successColor, $alpha: 1);
@@ -182,6 +184,14 @@ $textShadowSize: 0.2vw;
       &.correct {
         border-style: solid;
         border-color: color.change($successColor, $alpha: 1);
+      }
+    }
+    .videoComplete.answered & {
+      &:not(.correct) {
+        background-color: color.change(#f00, $alpha: 0.4);
+        // NOTE: Don't show a border for unchoosen wrong option
+        // border-style: dashed;
+        // border-color: color.change(#f00, $alpha: .5);
       }
     }
     &:active {
