@@ -295,7 +295,7 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
       skipVideo={skipVideo}
       videoComplete={videoComplete}
     >
-      {!isFinishedComplete && (
+      {hasVideo && !isFinishedComplete && (
         <video
           key={['video', gameId, screenId].join('-')}
           src={videoUrl}
@@ -305,7 +305,7 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
           onError={handleVideoError}
           onPlay={handleVideoPlay}
           ref={refVideo}
-          // controls
+          controls={!videoComplete}
           autoPlay
           // muted
         ></video>
