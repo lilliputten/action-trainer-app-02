@@ -1,0 +1,156 @@
+[STREAM]
+index=0
+codec_name=h264
+codec_long_name=H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10
+profile=High
+codec_type=video
+codec_tag_string=avc1
+codec_tag=0x31637661
+width=1920
+height=1080
+coded_width=1920
+coded_height=1080
+closed_captions=0
+film_grain=0
+has_b_frames=0
+sample_aspect_ratio=1:1
+display_aspect_ratio=16:9
+pix_fmt=yuv420p
+level=42
+color_range=unknown
+color_space=unknown
+color_transfer=unknown
+color_primaries=unknown
+chroma_location=left
+field_order=progressive
+refs=1
+is_avc=true
+nal_length_size=4
+id=0x1
+r_frame_rate=25/1
+avg_frame_rate=25/1
+time_base=1/25000
+start_pts=0
+start_time=0.000000
+duration_ts=1251000
+duration=50.040000
+bit_rate=17243046
+max_bit_rate=N/A
+bits_per_raw_sample=8
+nb_frames=1251
+nb_read_frames=N/A
+nb_read_packets=N/A
+extradata_size=41
+DISPOSITION:default=1
+DISPOSITION:dub=0
+DISPOSITION:original=0
+DISPOSITION:comment=0
+DISPOSITION:lyrics=0
+DISPOSITION:karaoke=0
+DISPOSITION:forced=0
+DISPOSITION:hearing_impaired=0
+DISPOSITION:visual_impaired=0
+DISPOSITION:clean_effects=0
+DISPOSITION:attached_pic=0
+DISPOSITION:timed_thumbnails=0
+DISPOSITION:non_diegetic=0
+DISPOSITION:captions=0
+DISPOSITION:descriptions=0
+DISPOSITION:metadata=0
+DISPOSITION:dependent=0
+DISPOSITION:still_image=0
+DISPOSITION:multilayer=0
+TAG:creation_time=2024-12-25T12:56:56.000000Z
+TAG:language=eng
+TAG:handler_name=Mainconcept Video Media Handler
+TAG:vendor_id=[0][0][0][0]
+TAG:encoder=AVC Coding
+[/STREAM]
+[STREAM]
+index=1
+codec_name=aac
+codec_long_name=AAC (Advanced Audio Coding)
+profile=LC
+codec_type=audio
+codec_tag_string=mp4a
+codec_tag=0x6134706d
+sample_fmt=fltp
+sample_rate=48000
+channels=2
+channel_layout=stereo
+bits_per_sample=0
+initial_padding=0
+id=0x2
+r_frame_rate=0/0
+avg_frame_rate=0/0
+time_base=1/48000
+start_pts=0
+start_time=0.000000
+duration_ts=2401920
+duration=50.040000
+bit_rate=317266
+max_bit_rate=N/A
+bits_per_raw_sample=N/A
+nb_frames=2347
+nb_read_frames=N/A
+nb_read_packets=N/A
+extradata_size=2
+DISPOSITION:default=1
+DISPOSITION:dub=0
+DISPOSITION:original=0
+DISPOSITION:comment=0
+DISPOSITION:lyrics=0
+DISPOSITION:karaoke=0
+DISPOSITION:forced=0
+DISPOSITION:hearing_impaired=0
+DISPOSITION:visual_impaired=0
+DISPOSITION:clean_effects=0
+DISPOSITION:attached_pic=0
+DISPOSITION:timed_thumbnails=0
+DISPOSITION:non_diegetic=0
+DISPOSITION:captions=0
+DISPOSITION:descriptions=0
+DISPOSITION:metadata=0
+DISPOSITION:dependent=0
+DISPOSITION:still_image=0
+DISPOSITION:multilayer=0
+TAG:creation_time=2024-12-25T12:56:56.000000Z
+TAG:language=eng
+TAG:handler_name=#Mainconcept MP4 Sound Media Handler
+TAG:vendor_id=[0][0][0][0]
+[/STREAM]
+[FORMAT]
+filename=01.mp4
+nb_streams=2
+nb_programs=0
+nb_stream_groups=0
+format_name=mov,mp4,m4a,3gp,3g2,mj2
+format_long_name=QuickTime / MOV
+start_time=0.000000
+duration=50.040000
+size=109898267
+bit_rate=17569666
+probe_score=100
+TAG:major_brand=mp42
+TAG:minor_version=0
+TAG:compatible_brands=mp42mp41
+TAG:creation_time=2024-12-25T12:56:56.000000Z
+[/FORMAT]
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '01.mp4':
+  Metadata:
+    major_brand     : mp42
+    minor_version   : 0
+    compatible_brands: mp42mp41
+    creation_time   : 2024-12-25T12:56:56.000000Z
+  Duration: 00:00:50.04, start: 0.000000, bitrate: 17569 kb/s
+  Stream #0:0[0x1](eng): Video: h264 (High) (avc1 / 0x31637661), yuv420p(progressive), 1920x1080 [SAR 1:1 DAR 16:9], 17243 kb/s, 25 fps, 25 tbr, 25k tbn (default)
+    Metadata:
+      creation_time   : 2024-12-25T12:56:56.000000Z
+      handler_name    : ?Mainconcept Video Media Handler
+      vendor_id       : [0][0][0][0]
+      encoder         : AVC Coding
+  Stream #0:1[0x2](eng): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 317 kb/s (default)
+    Metadata:
+      creation_time   : 2024-12-25T12:56:56.000000Z
+      handler_name    : #Mainconcept MP4 Sound Media Handler
+      vendor_id       : [0][0][0][0]
