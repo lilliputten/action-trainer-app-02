@@ -57,11 +57,12 @@ export function useScreenParams(opts: TScreenParamsOptions | undefined = undefin
     navigate,
     opts,
   ]);
-  console.log('[useScreenParams]', {
-    gameId,
-    // scenarioId,
-    screenId,
-  });
+  /* console.log('[useScreenParams]', {
+   *   gameId,
+   *   // scenarioId,
+   *   screenId,
+   * });
+   */
   return {
     gameId,
     // scenarioId,

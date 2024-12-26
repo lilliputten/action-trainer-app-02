@@ -2,6 +2,9 @@
 /* eslint-disable no-console */
 /**
  * @desc A helper to automatically switch a scenario. A scenario module should exists in the folder `src/scenarios`.
+ * @changed 2024.12.26, 15:20
+ *
+ * Use `node .utils/switch-scenario.js --switch {SCENARIO_NAME}` from console to switch scenario
  */
 
 const fs = require('fs');

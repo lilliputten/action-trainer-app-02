@@ -50,14 +50,15 @@ export function useScreenData() {
     // scenarioId,
     // scenarioData,
   };
-  console.log('[useScreenData]', {
-    result,
-    gameId,
-    screenId,
-    gameData,
-    foundScreen,
-    // scenarioId,
-    // scenarioData,
-  });
+  /* console.log('[useScreenData]', {
+   *   result,
+   *   gameId,
+   *   screenId,
+   *   gameData,
+   *   foundScreen,
+   *   // scenarioId,
+   *   // scenarioData,
+   * });
+   */
   return result;
 }

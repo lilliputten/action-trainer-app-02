@@ -28,6 +28,8 @@ type TGameScreenProps = TScreenData & TPropsWithClassName;
 
 interface TMemo {
   hasNavigated?: boolean;
+  videoStarted?: boolean;
+  waitForClick?: boolean;
 }
 
 export const GameScreen: React.FC<TGameScreenProps> = (props) => {
@@ -60,6 +62,7 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
   const hasVideo = !!videoUrl;
   const answersCount = Array.isArray(answers) ? answers.length : 0;
   const hasAnswers = !!answersCount;
+  const hasCorrectAnswer = Array.isArray(answers) && answers.find(({ isCorrect }) => isCorrect);
   // const screensCount = scenarioData.screens.length;
   const isLastScreen = !screenGoTo && !hasAnswers; // screenNo === screensCount;
   const showFinalButton = !hasAnswers;
@@ -72,11 +75,8 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
     height: videoContainerHeight,
   } = useContainerSize<HTMLVideoElement>();
   const videoNode = refVideo.current;
-  // const buttonBorderWidth = videoContainerWidth && videoContainerWidth / 100;
-  // const buttonBorderRadius = videoContainerWidth && videoContainerWidth / 80;
   const finalButtonBorderWidth = videoContainerWidth && videoContainerWidth / 200;
   const finalTextSize = videoContainerWidth && videoContainerWidth / 25;
-  // const finalImageSize = videoContainerWidth && videoContainerWidth / 5;
   const refBox = React.useRef<HTMLDivElement>(null);
   /** Video has already played */
   const [videoComplete, setVideoComplete] = React.useState<boolean>(!hasVideo /* || doDebug */);
@@ -91,38 +91,6 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
   /** Answer */
   const [answerIdx, setAnswerIdx] = React.useState<number | undefined>();
   const isAnswered = videoComplete && (!hasAnswers || answerIdx != null);
-  // const [hasNavigated, setHasNavigated] = React.useState(false);
-  // const [hasInited, setInited] = React.useState(false);
-  /* // DEBUG
-   * React.useEffect(() => {
-   *   console.log('[GameScreen:DEBUG]', {
-   *     gameId,
-   *     screenId,
-   *     screenData,
-   *     hasAnswers,
-   *     videoComplete,
-   *     isVideoStarted,
-   *     videoEffectComplete,
-   *     isCanPlay,
-   *     isActive,
-   *     isFinished,
-   *     isFinishedComplete,
-   *   });
-   * }, [
-   *   // prettier-ignore
-   *   gameId,
-   *   screenId,
-   *   screenData,
-   *   hasAnswers,
-   *   videoComplete,
-   *   isVideoStarted,
-   *   videoEffectComplete,
-   *   isCanPlay,
-   *   isActive,
-   *   isFinished,
-   *   isFinishedComplete,
-   * ]);
-   */
   // Update geometry...
   const updateBoxGeometry = React.useCallback(() => {
     const box = refBox.current;
@@ -148,33 +116,49 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
   ]);
   // Init screen...
   React.useEffect(() => {
-    /* console.log('[GameScreen: Init screen]', {
-     *   gameId,
-     *   screenId,
-     * });
-     */
-    // setInited(true);
     setTimeout(() => {
-      // console.log('[GameScreen: Init screen : setActive]');
       enableCanPlay();
       setActive(true);
     }, animationTime);
   }, [gameId, screenId, enableCanPlay]);
   // Start video handler...
+  const startVideoPlayAction = React.useCallback(() => {
+    const video = refVideo.current;
+    if (video && !memo.videoStarted) {
+      return video.play().then(() => {
+        memo.videoStarted = true;
+        updateBoxGeometry();
+      });
+    }
+    return Promise.resolve(false);
+  }, [refVideo, memo, updateBoxGeometry]);
   const startVideoPlay = React.useCallback(() => {
     const video = refVideo.current;
-    if (video && hasVideo) {
-      /* console.log('[GameScreen] startVideoPlay', {
-       *   video,
-       *   testingAnswerLayouts,
-       * });
-       */
-      if (!testingAnswerLayouts) {
-        video.play();
-      }
-      updateBoxGeometry();
+    if (video && hasVideo && !testingAnswerLayouts) {
+      startVideoPlayAction().catch((error) => {
+        // NOTE: Handle `play() failed... error (due to inactive page)
+        if (error.name === 'NotAllowedError') {
+          memo.waitForClick = true;
+          // See effect to delayed call `startVideoPlayAction` below
+        }
+      });
     }
-  }, [refVideo, updateBoxGeometry, hasVideo]);
+  }, [refVideo, startVideoPlayAction, hasVideo, memo]);
+  React.useEffect(() => {
+    const eventType = 'mousedown';
+    const clickHandler = () => {
+      if (memo.waitForClick) {
+        startVideoPlayAction();
+        memo.waitForClick = false;
+        // Remove itself...
+        document.body.removeEventListener(eventType, clickHandler);
+      }
+    };
+    document.body.addEventListener(eventType, clickHandler);
+    return () => {
+      document.body.removeEventListener(eventType, clickHandler);
+    };
+  }, [memo, startVideoPlayAction]);
   // Start and initialize video with a delay...
   const startVideoPlayHandler = React.useRef<NodeJS.Timeout | undefined>(undefined);
   React.useEffect(() => {
@@ -186,21 +170,6 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
       startVideoPlayHandler.current = setTimeout(startVideoPlay, effectTime);
     }
   }, [isCanPlay, startVideoPlay]);
-  /* // Set enableCanPlay handler (TODO?)...
-   * React.useEffect(() => {
-   *   const video = videoNode;
-   *   console.log('[GameScreen: Set enableCanPlay handler]', {
-   *     video,
-   *     // refVideo,
-   *   });
-   *   if (video) {
-   *     video.addEventListener('canplay', enableCanPlay);
-   *     return () => {
-   *       video?.removeEventListener('canplay', enableCanPlay);
-   *     };
-   *   }
-   * }, [videoNode, enableCanPlay]);
-   */
   const handleVideoPlay = React.useCallback(() => {
     setVideoStarted(true);
   }, []);
@@ -236,10 +205,6 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
   const handleUserChoice = React.useCallback<React.MouseEventHandler<HTMLButtonElement>>(
     (event) => {
       const answerIdx = Number(event.currentTarget.id);
-      /* console.log('[GameScreen:handleUserChoice]', {
-       *   answerIdx,
-       * });
-       */
       setAnswerIdx(answerIdx);
       setTimeout(handleFinalButtonClick, answerWaitDelay);
     },
@@ -248,10 +213,9 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
   const computeNextScreenRoute = React.useCallback(() => {
     if (isLastScreen) {
       return `/game/${gameId}/start`;
-      // return `/game/${gameId}/finished`;
     }
     const answerGoTo = answers && answerIdx != null && answers[answerIdx].goTo;
-    return answerGoTo || getNextScreenRoute(gameId, screenGoTo, true);
+    return getNextScreenRoute(gameId, answerGoTo || screenGoTo, true);
   }, [
     // prettier-ignore
     answerIdx,
@@ -264,20 +228,8 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
   React.useEffect(() => {
     const { hasNavigated } = memo;
     const goToNext = !hasNavigated && isFinishedComplete && isAnswered;
-    /* console.log('[GameScreen: All effects have finished: before]', {
-     *   goToNext,
-     *   hasNavigated,
-     *   isFinishedComplete,
-     *   isAnswered,
-     * });
-     */
     if (goToNext) {
       const nextScreenRoute = computeNextScreenRoute();
-      /* console.log('[GameScreen: All effects have finished: navigate]', {
-       *   nextScreenRoute,
-       * });
-       */
-      // setHasNavigated(true);
       memo.hasNavigated = true;
       navigate(nextScreenRoute);
     } else if (isAnswered && autoContinue) {
@@ -312,25 +264,10 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
           onClick={handleUserChoice}
           sx={sx}
           title={text}
-        >
-          {/*
-          <span className={styles.answerText}>
-            <Markdown>{text}</Markdown>
-          </span>
-          */}
-        </ButtonBase>
+        ></ButtonBase>
       );
     });
-  }, [
-    answersSx,
-    answerIdx,
-    answers,
-    handleUserChoice,
-    // scenarioId,
-    isAnswered,
-    // buttonBorderWidth,
-    // buttonBorderRadius,
-  ]);
+  }, [answersSx, answerIdx, answers, handleUserChoice, isAnswered]);
   const skipVideo = React.useCallback(() => {
     const video = refVideo.current;
     if (video) {
@@ -346,6 +283,7 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
       screen-id={id}
       className={classNames(
         styles.root,
+        hasCorrectAnswer && styles.hasCorrectAnswer,
         (doDebug || videoComplete) && styles.videoComplete,
         (doDebug || videoEffectComplete) && styles.videoEffectComplete,
         (doDebug || isFinished) && styles.finished,
@@ -368,8 +306,8 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
           onPlay={handleVideoPlay}
           ref={refVideo}
           // controls
-          // autoPlay
-          muted
+          autoPlay
+          // muted
         ></video>
       )}
       <Box className={classNames(styles.overContainer)}>
