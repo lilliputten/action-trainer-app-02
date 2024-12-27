@@ -1,6 +1,6 @@
 <!--
 @since 2024.06.05, 23:18
-@changed 2024.12.27, 15:35
+@changed 2024.12.27, 17:27
 -->
 
 # action-trainer-app-02
@@ -20,19 +20,28 @@ TODO: Add the project description.
 
 Repository: https://github.com/lilliputten/action-trainer-app-02
 
-Demo deploy server (with a recent build):
+Published deplys:
 
-- Scenario 1: https://action-trainer-app-02.march.team/scenario1
-- Scenario 2: https://action-trainer-app-02.march.team/scenario2
-- Scenario 241226: https://action-trainer-app-02.march.team/scenario241226
-- Scenario 241227a: https://action-trainer-app-02.march.team/scenario241227a
+### Scenario 1:
 
-Demo in a frame:
+- Basic view: https://action-trainer-app-02.march.team/scenario1
+- Framed view: https://action-trainer-app-02.march.team/scenario1/frame-test
 
-- Scenario 1: https://action-trainer-app-02.march.team/scenario1/frame-test
-- Scenario 2: https://action-trainer-app-02.march.team/scenario2/frame-test
-- Scenario 241226: https://action-trainer-app-02.march.team/scenario241226/frame-test
-- Scenario 241227a: https://action-trainer-app-02.march.team/scenario241227a/frame-test
+### Scenario 2:
+
+- Basic view: https://action-trainer-app-02.march.team/scenario2
+- Framed view: https://action-trainer-app-02.march.team/scenario2/frame-test
+
+### Scenario 241226:
+
+- Basic view: https://action-trainer-app-02.march.team/scenario241226
+- Framed view: https://action-trainer-app-02.march.team/scenario241226/frame-test
+
+### Scenario 241227a:
+
+- Basic view: https://action-trainer-app-02.march.team/scenario241227a
+- Framed view: https://action-trainer-app-02.march.team/scenario241227a/frame-test
+
 
 ## Project workflow
 
