@@ -14,6 +14,7 @@ import { useAppSessionStore } from 'src/store';
 import { LoaderSplash } from 'src/ui/Basic';
 import { ShowError } from 'src/components/app/ShowError';
 import { useScreenData } from 'src/core/hooks/routes';
+import { isDev } from 'src/core/constants/config';
 
 interface TProps extends TPropsWithChildrenAndClassName {
   ref?: React.ForwardedRef<HTMLDivElement>;
@@ -55,12 +56,14 @@ export const ScreenWrapper = observer<TProps, HTMLDivElement>(
     const toggleFullscreen = React.useCallback(() => {
       setFullscreen((isFullscreen) => !isFullscreen);
     }, []);
+    const showControls = ready && isDev;
     return (
       <ErrorBoundary fallbackRender={ShowError}>
-        <Box className={classNames(className)} ref={ref} data-game-id={gameId}>
+        <Box className={classNames('__ScreenWrapper', className)} ref={ref} data-game-id={gameId}>
           {children}
-          {ready && (
+          {showControls && (
             <Stack
+              className="__ScreenWrapper_Controls"
               sx={{
                 position: 'absolute',
                 right: 4,
