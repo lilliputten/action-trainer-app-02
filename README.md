@@ -1,13 +1,13 @@
 <!--
 @since 2024.06.05, 23:18
-@changed 2024.06.05, 23:18
+@changed 2024.12.27, 15:35
 -->
 
 # action-trainer-app-02
 
 Action trainer app.
 
-- Project info: v.0.0.5 / scenario241226 / 2024.12.27 14:26:19 +0300
+- Project info: v.0.0.6 / scenario241227a / 2024.12.27 15:38:20 +0300
 
 TODO: Add the project description.
 
@@ -25,12 +25,14 @@ Demo deploy server (with a recent build):
 - Scenario 1: https://action-trainer-app-02.march.team/scenario1
 - Scenario 2: https://action-trainer-app-02.march.team/scenario2
 - Scenario 241226: https://action-trainer-app-02.march.team/scenario241226
+- Scenario 241227a: https://action-trainer-app-02.march.team/scenario241227a
 
 Demo in a frame:
 
 - Scenario 1: https://action-trainer-app-02.march.team/scenario1/frame-test
 - Scenario 2: https://action-trainer-app-02.march.team/scenario2/frame-test
 - Scenario 241226: https://action-trainer-app-02.march.team/scenario241226/frame-test
+- Scenario 241227a: https://action-trainer-app-02.march.team/scenario241227a/frame-test
 
 ## Project workflow
 

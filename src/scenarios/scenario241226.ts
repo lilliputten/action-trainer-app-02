@@ -4,8 +4,6 @@ import { important } from 'src/core/helpers/styles/SxOpts';
 import { EDialogGameType } from 'src/core/types/game/EDialogGameType';
 import { TDialogGame } from 'src/core/types/game/TDialogGame';
 
-// const finalText = `Спасибо!`;
-
 const defaultAnswerSx: SxProps = {
   fontSize: percent(50),
   borderRadius: vw(2, important),
@@ -19,7 +17,7 @@ export const dialogGamesList: TDialogGame[] = [
   {
     id: EDialogGameType.Default,
     // startVideoUrl: './scenario-data/videos/1c/1c-0-start.mp4',
-    defaultScreenId: '01',
+    defaultScreenId: 'start',
     omitStartGame: true,
     useStartScreen: true,
     autoContinue: true,
@@ -29,19 +27,19 @@ export const dialogGamesList: TDialogGame[] = [
         videoUrl: './scenario-data/videos/12.mp4',
         autoContinue: false,
         buttonText: 'Начать заново',
-        goTo: '01',
+        goTo: 'start',
       },
+      // {
+      //   id: 'start',
+      //   // showComment: 'Начнем с ситуации, когда **врач задерживается и пациент готов подождать**.',
+      //   // showCommentSx: {
+      //   //   fontSize: percent(130),
+      //   // },
+      //   buttonText: 'Начать',
+      //   goTo: '01',
+      // },
       {
         id: 'start',
-        // showComment: 'Начнем с ситуации, когда **врач задерживается и пациент готов подождать**.',
-        // showCommentSx: {
-        //   fontSize: percent(130),
-        // },
-        buttonText: 'Начать',
-        goTo: '01',
-      },
-      {
-        id: '01',
         videoUrl: './scenario-data/videos/01.mp4',
         answers: [
           {

@@ -26,7 +26,7 @@ import styles from './GameScreen.module.scss';
 const doDebug = isDev && false;
 const testingAnswerLayouts = isDev && false;
 
-const answerWaitDelay = 3000;
+const answerWaitDelay = 2000;
 
 type TGameScreenProps = TScreenData & TPropsWithClassName;
 

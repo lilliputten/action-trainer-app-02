@@ -28,6 +28,7 @@ interface TProps extends TPropsWithChildrenAndClassName {
 export const ScreenWrapper = observer<TProps, HTMLDivElement>(
   React.forwardRef((props, ref) => {
     const { children, className, skipVideo, videoComplete, videoStarted } = props;
+    const isVideoPlaying = !videoComplete && videoStarted;
     const navigate = useNavigate();
 
     const appSessionStore = useAppSessionStore();
@@ -56,7 +57,7 @@ export const ScreenWrapper = observer<TProps, HTMLDivElement>(
     const toggleFullscreen = React.useCallback(() => {
       setFullscreen((isFullscreen) => !isFullscreen);
     }, []);
-    const showControls = ready && isDev;
+    const showControls = isDev || (ready && !isVideoPlaying);
     return (
       <ErrorBoundary fallbackRender={ShowError}>
         <Box className={classNames('__ScreenWrapper', className)} ref={ref} data-game-id={gameId}>
