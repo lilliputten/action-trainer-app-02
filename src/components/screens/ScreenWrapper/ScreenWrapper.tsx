@@ -20,12 +20,13 @@ interface TProps extends TPropsWithChildrenAndClassName {
   screenType?: string;
   skipVideo?: () => void;
   videoComplete?: boolean;
+  videoStarted?: boolean;
   // gameId?: string;
 }
 
 export const ScreenWrapper = observer<TProps, HTMLDivElement>(
   React.forwardRef((props, ref) => {
-    const { children, className, skipVideo, videoComplete } = props;
+    const { children, className, skipVideo, videoComplete, videoStarted } = props;
     const navigate = useNavigate();
 
     const appSessionStore = useAppSessionStore();
@@ -77,7 +78,7 @@ export const ScreenWrapper = observer<TProps, HTMLDivElement>(
                   <Undo />
                 </IconButton>
               )}
-              {!isRoot && hasVideo && (
+              {hasVideo && (
                 <IconButton
                   // component={RouterLinkComponent}
                   // to={getGameRoute(gameId, screenId, true)}
@@ -87,7 +88,7 @@ export const ScreenWrapper = observer<TProps, HTMLDivElement>(
                   <Replay />
                 </IconButton>
               )}
-              {!isRoot && hasVideo && !videoComplete && (
+              {hasVideo && videoStarted && !videoComplete && (
                 <IconButton
                   // component={RouterLinkComponent}
                   // to={`/game/${gameId}`}

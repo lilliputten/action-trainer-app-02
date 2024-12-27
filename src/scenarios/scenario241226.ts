@@ -19,12 +19,16 @@ export const dialogGamesList: TDialogGame[] = [
   {
     id: EDialogGameType.Default,
     // startVideoUrl: './scenario-data/videos/1c/1c-0-start.mp4',
-    defaultScreenId: 'start',
+    defaultScreenId: '01',
     omitStartGame: true,
+    useStartScreen: true,
+    autoContinue: true,
     screens: [
       {
         id: 'final',
         videoUrl: './scenario-data/videos/12.mp4',
+        autoContinue: false,
+        buttonText: 'Начать заново',
         goTo: '01',
       },
       {
@@ -120,6 +124,8 @@ export const dialogGamesList: TDialogGame[] = [
             goTo: '09',
             buttonSx: {
               ...defaultAnswerSx,
+              top: percent(30),
+              height: percent(25),
             },
           },
           {
@@ -127,7 +133,8 @@ export const dialogGamesList: TDialogGame[] = [
             goTo: '10',
             buttonSx: {
               ...defaultAnswerSx,
-              top: percent(46.5),
+              top: percent(53.5),
+              height: percent(15),
             },
           },
           {
@@ -135,7 +142,8 @@ export const dialogGamesList: TDialogGame[] = [
             goTo: '11',
             buttonSx: {
               ...defaultAnswerSx,
-              top: percent(62),
+              top: percent(67.5),
+              height: percent(18.5),
             },
           },
         ],
@@ -143,12 +151,12 @@ export const dialogGamesList: TDialogGame[] = [
       {
         id: '09',
         videoUrl: './scenario-data/videos/09.mp4',
-        goTo: '12',
+        goTo: 'final',
       },
       {
         id: '10',
         videoUrl: './scenario-data/videos/10.mp4',
-        goTo: '12',
+        goTo: 'final',
       },
       {
         id: '11',

@@ -35,7 +35,9 @@ export type TDialogGame = {
   id: EDialogGameType;
   title?: string;
   omitStartGame?: boolean;
+  useStartScreen?: boolean;
   startVideoUrl?: TUrl;
   defaultScreenId: TDialogScreenId;
   screens: TDialogScreen[];
+  autoContinue?: boolean;
 };

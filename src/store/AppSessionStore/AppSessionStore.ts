@@ -55,6 +55,7 @@ export class AppSessionStore {
   @observable useDemo: boolean = false;
 
   @observable inited: boolean = false;
+  @observable started: boolean = false; // Not required to be cleaned up
   @observable finished: boolean = false;
   @observable ready: boolean = false;
   @observable error?: Error;
@@ -134,6 +135,10 @@ export class AppSessionStore {
 
   @action setInited(inited: typeof AppSessionStore.prototype.inited) {
     this.inited = inited;
+  }
+
+  @action setStarted(started: typeof AppSessionStore.prototype.started) {
+    this.started = started;
   }
 
   @action setFinished(finished: typeof AppSessionStore.prototype.finished) {

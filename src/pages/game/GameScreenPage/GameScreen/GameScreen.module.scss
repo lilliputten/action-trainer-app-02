@@ -94,6 +94,47 @@
   }
 }
 
+.startScreen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 1;
+  transition: all $transitionTimeMs;
+  background-color: color.change($videoBlueColor, $alpha: 0.5);
+  align-items: center;
+  justify-content: center;
+  .startButton {
+    cursor: pointer;
+    padding: 2vw;
+    background-color: #000; // color.change(#000, $alpha: 0.7);
+    border-radius: 50%;
+    transition: all $transitionTimeMs;
+    opacity: 0.8;
+    &:hover {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+    svg {
+      color: #fff;
+      $size: 10vw;
+      width: $size;
+      height: $size;
+    }
+  }
+  &:hover {
+    background-color: color.change($videoBlueColor, $alpha: 0.3);
+    .startButton {
+      // opacity: 1;
+    }
+  }
+  &.started {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
 .curtain {
   background-color: $videoBgColor;
   opacity: 1;
@@ -231,8 +272,10 @@ $textShadowSize: 0.4vmin;
 
 .finalButton {
   &:global(.MuiButtonBase-root) {
-    &:before {
+    &.nice:before {
       background: linear-gradient(165deg, transparent 0%, color.change(black, $alpha: 0.5) 100%);
+    }
+    &:before {
       content: '';
       position: absolute;
       left: 0;
@@ -246,26 +289,33 @@ $textShadowSize: 0.4vmin;
     gap: 1vw;
     overflow: hidden;
     transition: all $transitionTimeMs;
-    $bgColor: $videoBlueColor;
-    background-color: $bgColor;
-    border-style: solid;
-    border-color: color.change(white, $alpha: 0.8);
+    background-color: #000;
+    color: #fff;
     font-size: 4vw;
-    color: color.mix(white, $bgColor, 100%);
     padding: 2vw 4vw;
     border-radius: 10vmin;
-    box-shadow:
-      0.2vw 0.2vw 0 0.3vw color.change(black, $alpha: 0.3),
-      inset 0.1vw 0.1vw 0 0.2vw color.change(black, $alpha: 0.2);
-    opacity: 0.8;
+    opacity: 0.6;
+    &.nice {
+      opacity: 0.8;
+      $bgColor: $videoBlueColor;
+      background-color: $bgColor;
+      border-style: solid;
+      border-color: color.change(white, $alpha: 0.8);
+      color: color.mix(white, $bgColor, 100%);
+      box-shadow:
+        0.2vw 0.2vw 0 0.3vw color.change(black, $alpha: 0.3),
+        inset 0.1vw 0.1vw 0 0.2vw color.change(black, $alpha: 0.2);
+    }
     &:hover {
       opacity: 1;
       &:before {
         opacity: 0.3;
       }
     }
-    &:active {
+    &.nice:active {
       box-shadow: 0.2vw 0.2vw 0 0 color.change(black, $alpha: 0.6);
+    }
+    &:active {
       &:before {
         opacity: 0.8;
       }

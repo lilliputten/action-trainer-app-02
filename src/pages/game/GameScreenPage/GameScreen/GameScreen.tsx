@@ -2,8 +2,9 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 import { Box, ButtonBase, Stack, SxProps } from '@mui/material';
-import { Replay, PlayArrow } from '@mui/icons-material';
+import { PlayArrow, Replay } from '@mui/icons-material';
 import Markdown from 'react-markdown';
+import { observer } from 'mobx-react-lite';
 
 import { isDev } from 'src/core/constants/config';
 import { showError } from 'src/ui/Basic';
@@ -16,6 +17,9 @@ import { animationTime, effectTime } from 'src/core/assets/scss';
 import { getNextScreenRoute } from 'src/core/helpers/routes';
 import { TPropsWithClassName } from 'src/core/types';
 import { ShowError } from 'src/components/app/ShowError';
+
+import { useAppSessionStore } from 'src/store';
+import { useGameData } from 'src/core/hooks/game';
 
 import styles from './GameScreen.module.scss';
 
@@ -32,7 +36,7 @@ interface TMemo {
   waitForClick?: boolean;
 }
 
-export const GameScreen: React.FC<TGameScreenProps> = (props) => {
+export const GameScreen: React.FC<TGameScreenProps> = observer((props) => {
   const memo = React.useMemo<TMemo>(() => ({}), []);
   const {
     // prettier-ignore
@@ -42,7 +46,15 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
   } = props;
   // Eg page url: /game/first/irina/1
   const navigate = useNavigate();
+  // App session
+  const appSessionStore = useAppSessionStore();
+  const { started } = appSessionStore;
   // Get game data...
+  const game = useGameData(gameId);
+  const { useStartScreen, autoContinue: gameAutoContinue } = game;
+  /* Combined started status: can we start the video or need to wait until click on the start screen? */
+  const isStarted = !useStartScreen || started;
+  // Get screen data...
   const {
     id,
     videoUrl,
@@ -51,7 +63,7 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
     showQuote,
     showQuestion,
     goTo: screenGoTo,
-    autoContinue,
+    autoContinue = gameAutoContinue,
     answersSx,
     textsSx,
     showQuestionSx,
@@ -59,14 +71,16 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
     showCommentSx,
     buttonText = 'Продолжить',
   } = screenData;
+  const isAutoContinue = autoContinue; // || gameAutoContinue;
   const hasVideo = !!videoUrl;
   const answersCount = Array.isArray(answers) ? answers.length : 0;
   const hasAnswers = !!answersCount;
   const hasCorrectAnswer = Array.isArray(answers) && answers.find(({ isCorrect }) => isCorrect);
   // const screensCount = scenarioData.screens.length;
-  const isLastScreen = !screenGoTo && !hasAnswers; // screenNo === screensCount;
+  const isLastScreen = false; // !screenGoTo && !hasAnswers; // screenNo === screensCount;
   const showFinalButton = !hasAnswers;
   const isFinal = id === 'final';
+  // const finalButtonText = buttonText || (isFinal ? 'Начать заново' : 'Завершить');
   const finalButtonText = isLastScreen ? (isFinal ? 'Начать заново' : 'Завершить') : buttonText;
   // Initialize video ref (to update geometry)...
   const {
@@ -161,25 +175,31 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
   }, [memo, startVideoPlayAction]);
   // Start and initialize video with a delay...
   const startVideoPlayHandler = React.useRef<NodeJS.Timeout | undefined>(undefined);
+  // Start video
   React.useEffect(() => {
-    if (isCanPlay) {
+    if (isStarted && isCanPlay) {
       // console.log('[GameScreen: delayed startVideoPlay]');
       if (startVideoPlayHandler.current) {
         clearTimeout(startVideoPlayHandler.current);
       }
       startVideoPlayHandler.current = setTimeout(startVideoPlay, effectTime);
     }
-  }, [isCanPlay, startVideoPlay]);
+  }, [isStarted, isCanPlay, startVideoPlay]);
+  /** Video widget start handler */
   const handleVideoPlay = React.useCallback(() => {
+    appSessionStore.setStarted(true);
     setVideoStarted(true);
-  }, []);
+  }, [appSessionStore]);
+  /** Video widget end handler */
   const handleVideoEnd = React.useCallback(() => {
     setVideoComplete(true);
     setTimeout(() => {
       setVideoEffectComplete(true);
     }, effectTime);
   }, []);
+  /** Video error */
   const [error, setError] = React.useState<Error>();
+  /** Video widget error handler */
   const handleVideoError = React.useCallback(
     (error: unknown) => {
       // eslint-disable-next-line no-console
@@ -192,8 +212,7 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
     },
     [videoUrl],
   );
-  /** Final action */
-  // React.MouseEventHandler<HTMLButtonElement>
+  /** Final action handler */
   const handleFinalButtonClick = React.useCallback(() => {
     // console.log('[GameScreen:handleFinalButtonClick]');
     setFinished(true);
@@ -202,6 +221,7 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
       setFinishedComplete(true);
     }, effectTime);
   }, []);
+  /** Handle user button choice action */
   const handleUserChoice = React.useCallback<React.MouseEventHandler<HTMLButtonElement>>(
     (event) => {
       const answerIdx = Number(event.currentTarget.id);
@@ -210,6 +230,7 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
     },
     [handleFinalButtonClick],
   );
+  /** Prepared next screen route */
   const computeNextScreenRoute = React.useCallback(() => {
     if (isLastScreen) {
       return `/game/${gameId}/start`;
@@ -225,6 +246,7 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
     isLastScreen,
     screenGoTo,
   ]);
+  // Effect: Go to the next screen
   React.useEffect(() => {
     const { hasNavigated } = memo;
     const goToNext = !hasNavigated && isFinishedComplete && isAnswered;
@@ -232,19 +254,25 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
       const nextScreenRoute = computeNextScreenRoute();
       memo.hasNavigated = true;
       navigate(nextScreenRoute);
-    } else if (isAnswered && autoContinue) {
-      setTimeout(handleFinalButtonClick, answerWaitDelay);
+    } else if (isAnswered && isAutoContinue) {
+      if (hasAnswers) {
+        // Make a delay only had answers...
+        setTimeout(handleFinalButtonClick, answerWaitDelay);
+      } else {
+        handleFinalButtonClick();
+      }
     }
   }, [
     computeNextScreenRoute,
     isAnswered,
-    autoContinue,
+    isAutoContinue,
     isFinishedComplete,
     memo,
     navigate,
     handleFinalButtonClick,
+    hasAnswers,
   ]);
-  // Generate action buttons using `handleUserChoice`
+  /** Memoized action buttons (use `handleUserChoice` as an action) */
   const answerButtons = React.useMemo(() => {
     return answers?.map((item, idx) => {
       const { text, isCorrect, buttonSx } = item;
@@ -268,12 +296,14 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
       );
     });
   }, [answersSx, answerIdx, answers, handleUserChoice, isAnswered]);
+  /** Skip video handler */
   const skipVideo = React.useCallback(() => {
     const video = refVideo.current;
     if (video) {
       video.currentTime = video.duration - 1;
     }
-  }, [refVideo]);
+    appSessionStore.setStarted(true);
+  }, [refVideo, appSessionStore]);
   const showContent = !!(showQuote || showComment || showQuestion || showFinalButton);
   if (error) {
     return <ShowError error={error} />;
@@ -294,6 +324,7 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
       )}
       skipVideo={skipVideo}
       videoComplete={videoComplete}
+      videoStarted={isVideoStarted}
     >
       {hasVideo && !isFinishedComplete && (
         <video
@@ -305,7 +336,7 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
           onError={handleVideoError}
           onPlay={handleVideoPlay}
           ref={refVideo}
-          controls={!videoComplete}
+          controls={isStarted && !videoComplete}
           autoPlay
           // muted
         ></video>
@@ -369,9 +400,12 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
                       </Box>
                     )}
                   </Stack>
-                  {showFinalButton && !autoContinue && (
+                  {showFinalButton && !isAutoContinue && (
                     <ButtonBase
-                      className={classNames(styles.finalButton)}
+                      className={classNames(
+                        styles.finalButton,
+                        // niceFinalButton && styles.nice,
+                      )}
                       title={finalButtonText}
                       onClick={handleFinalButtonClick}
                       sx={{
@@ -397,7 +431,21 @@ export const GameScreen: React.FC<TGameScreenProps> = (props) => {
           )}
         </Box>
       </Box>
+      {useStartScreen && (
+        <Stack className={classNames(styles.startScreen, isStarted && styles.started)}>
+          <ButtonBase
+            className={classNames(styles.startButton)}
+            onClick={() => {
+              appSessionStore.setStarted(true);
+              startVideoPlay();
+            }}
+            title="Начать"
+          >
+            <PlayArrow />
+          </ButtonBase>
+        </Stack>
+      )}
       <Box className={classNames(styles.curtain)}></Box>
     </ScreenWrapper>
   );
-};
+});
