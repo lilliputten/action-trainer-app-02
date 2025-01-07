@@ -20,15 +20,15 @@
 #root,
 body.page {
   @include singleFullSizeContainer;
+  // border: 1px dashed red; // DEBUG
+  // Set video background color
+  background-color: $defaultBackgroundColor;
   & {
     /*!KEEP*/
     // Set fixed size
     // width: $screenWidthPx;
     // height: $screenHeightPx;
   }
-  // border: 1px dashed red; // DEBUG
-  // Set video background color
-  background-color: $defaultBackgroundColor;
 }
 
 .dull {

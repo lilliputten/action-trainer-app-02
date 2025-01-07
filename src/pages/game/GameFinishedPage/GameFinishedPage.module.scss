@@ -38,17 +38,6 @@ $textShadowSize: 0.4vw;
 
 .button {
   &:global(.MuiButtonBase-root) {
-    &:before {
-      background: linear-gradient(165deg, transparent 0%, color.change(black, $alpha: 0.5) 100%);
-      content: '';
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      opacity: 0.5;
-      transition: all $transitionTimeMs;
-    }
     overflow: hidden;
     display: flex;
     gap: 2vw;
@@ -64,6 +53,17 @@ $textShadowSize: 0.4vw;
       0.2vmin 0.2vmin 0 0.3vmin color.change(black, $alpha: 0.3),
       inset 0.1vmin 0.1vmin 0 0.2vmin color.change(black, $alpha: 0.2);
     opacity: 0.8;
+    &:before {
+      background: linear-gradient(165deg, transparent 0%, color.change(black, $alpha: 0.5) 100%);
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      opacity: 0.5;
+      transition: all $transitionTimeMs;
+    }
     &:hover {
       opacity: 1;
       &:before {

@@ -43,11 +43,11 @@
   object-fit: contain;
   transition: opacity $transitionTimeMs;
   opacity: 1;
+  max-width: 100%;
+  max-height: 100%;
   .videoComplete & {
     opacity: 0.8;
   }
-  max-width: 100%;
-  max-height: 100%;
 }
 
 .curtain,
@@ -56,7 +56,7 @@
   overflow: hidden;
 
   display: flex;
-  align-items: stretch;
+  align-items: center;
   flex-direction: column;
   flex: 1;
   justify-content: center;
@@ -168,12 +168,13 @@ $textShadowSize: 0.2vw;
     overflow: hidden;
     position: absolute;
     border-style: dashed;
-    border-radius: 2vw;
-    border-width: 0.7vw;
+    border-radius: 2vmax !important;
+    border-width: .5vmax;
     border-color: transparent; // color.change(white, $alpha: 0.8);
     transition: all $transitionTimeMs;
     font-size: 75%;
     $bgColor: $videoBlueColor;
+    $borderColor: color.change(#000, $alpha: 0.5);
     background-color: transparent; // $bgColor;
     opacity: 0.8;
     pointer-events: none;
@@ -183,14 +184,14 @@ $textShadowSize: 0.2vw;
     .DEBUG &:global(.MuiButtonBase-root), // DEBUG: Show all frames
     &:hover {
       border-style: dashed;
-      border-color: color.change($videoBlueColor, $alpha: 0.5);
+      border-color: color.change($borderColor, $alpha: 0.2);
     }
     &:hover,
     &.selected {
+      opacity: 1;
       .videoEffectComplete & {
         backdrop-filter: $buttonHoverFilters;
       }
-      opacity: 1;
     }
     &.correct {
       border-style: dashed;
@@ -199,7 +200,7 @@ $textShadowSize: 0.2vw;
     }
     &.selected {
       border-style: solid;
-      border-color: color.change($videoBlueColor, $alpha: 1);
+      border-color: color.change($borderColor, $alpha: 1);
     }
     .hasCorrectAnswer &.selected.correct {
       border-style: solid;
@@ -272,6 +273,16 @@ $textShadowSize: 0.4vmin;
 
 .finalButton {
   &:global(.MuiButtonBase-root) {
+    display: flex;
+    gap: 1vw;
+    overflow: hidden;
+    transition: all $transitionTimeMs;
+    background-color: #000;
+    color: #fff;
+    font-size: 4vw;
+    padding: 2vw 4vw;
+    border-radius: 10vmin;
+    opacity: 0.6;
     &.nice:before {
       background: linear-gradient(165deg, transparent 0%, color.change(black, $alpha: 0.5) 100%);
     }
@@ -285,16 +296,6 @@ $textShadowSize: 0.4vmin;
       opacity: 0.5;
       transition: all $transitionTimeMs;
     }
-    display: flex;
-    gap: 1vw;
-    overflow: hidden;
-    transition: all $transitionTimeMs;
-    background-color: #000;
-    color: #fff;
-    font-size: 4vw;
-    padding: 2vw 4vw;
-    border-radius: 10vmin;
-    opacity: 0.6;
     &.nice {
       opacity: 0.8;
       $bgColor: $videoBlueColor;

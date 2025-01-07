@@ -34,6 +34,21 @@ const cracoConfig = {
           @import "src/core/assets/scss/mixins.scss";
         `,
       },
+      sassOptions: {
+        // @see https://github.com/sass/node-sass#outputstyle
+        // outputStyle: minimizeAssets ? 'compressed' : 'expanded',
+        // @see https://www.npmjs.com/package/node-sass-glob-importer
+        // importer: globImporter(), # Got error here as the plugin is obsolete
+        // quietDeps: true,
+        // /* @type {Deprecations[]}
+        //  */
+        // silenceDeprecations: [
+        //   // @see node_modules/sass/types/deprecations.d.ts
+        //   'import',
+        //   'color-functions',
+        //   'global-builtin',
+        // ],
+      },
     },
   },
   plugins: [
