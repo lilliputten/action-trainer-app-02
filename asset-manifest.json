@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "./static/css/main.6a45753b.css",
-    "main.js": "./static/js/main.54d0b117.js",
+    "main.js": "./static/js/main.f5c96926.js",
     "static/js/367.6b0d392d.chunk.js": "./static/js/367.6b0d392d.chunk.js",
     "scenario-data/videos/08.mp4": "./scenario-data/videos/08.mp4",
     "scenario-data/videos/05.mp4": "./scenario-data/videos/05.mp4",
@@ -77,11 +77,11 @@
     "scenario-data/00-videos-info.md": "./scenario-data/00-videos-info.md",
     "project-info.txt": "./project-info.txt",
     "main.6a45753b.css.map": "./static/css/main.6a45753b.css.map",
-    "main.54d0b117.js.map": "./static/js/main.54d0b117.js.map",
+    "main.f5c96926.js.map": "./static/js/main.f5c96926.js.map",
     "367.6b0d392d.chunk.js.map": "./static/js/367.6b0d392d.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.6a45753b.css",
-    "static/js/main.54d0b117.js"
+    "static/js/main.f5c96926.js"
   ]
 }
