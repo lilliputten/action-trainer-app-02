@@ -7,7 +7,7 @@
 
 Action trainer app.
 
-- Project info: v.0.0.7 / scenario241227b / 2024.12.27 17:22:50 +0300
+- Project info: v.0.0.8 / scenario241227a / 2025.01.07 17:26:07 +0300
 
 TODO: Add the project description.
 
@@ -41,6 +41,11 @@ Published deplys:
 
 - Basic view: https://action-trainer-app-02.march.team/scenario241227a
 - Framed view: https://action-trainer-app-02.march.team/scenario241227a/frame-test
+
+### Scenario 241227b:
+
+- Basic view: https://action-trainer-app-02.march.team/scenario241227b
+- Framed view: https://action-trainer-app-02.march.team/scenario241227b/frame-test
 
 ## Project workflow
 
