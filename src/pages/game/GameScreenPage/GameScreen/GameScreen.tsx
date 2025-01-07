@@ -128,8 +128,29 @@ export const GameScreen: React.FC<TGameScreenProps> = observer((props) => {
       return indices;
     });
   }, []);
-  const isAnswered = videoComplete && (!hasAnswers || answerIdx != null);
-  const showFinalButton = !hasAnswers || !autoContinue || (isAnswered && waitForMultipleAnswers);
+  const canGoForward = videoComplete && (!hasAnswers || answerIdx != null);
+  const showFinalButton = !autoContinue || (canGoForward && waitForMultipleAnswers);
+  // const showFinalButton = !hasAnswers || !autoContinue || (canGoForward && waitForMultipleAnswers);
+  /* React.useEffect(() => {
+   *   console.log('[showFinalButton]', {
+   *     showFinalButton,
+   *     videoComplete,
+   *     answerIdx,
+   *     hasAnswers,
+   *     autoContinue,
+   *     canGoForward,
+   *     waitForMultipleAnswers,
+   *   })
+   * }, [
+   *   showFinalButton,
+   *   videoComplete,
+   *   answerIdx,
+   *   hasAnswers,
+   *   autoContinue,
+   *   canGoForward,
+   *   waitForMultipleAnswers,
+   * ]);
+   */
   // Update geometry...
   const updateBoxGeometry = React.useCallback(() => {
     const box = refBox.current;
@@ -276,12 +297,12 @@ export const GameScreen: React.FC<TGameScreenProps> = observer((props) => {
   // Effect: Go to the next screen
   React.useEffect(() => {
     const { hasNavigated } = memo;
-    const goToNext = !hasNavigated && isFinishedComplete && isAnswered;
+    const goToNext = !hasNavigated && isFinishedComplete && canGoForward;
     if (goToNext) {
       const nextScreenRoute = computeNextScreenRoute();
       memo.hasNavigated = true;
       navigate(nextScreenRoute);
-    } else if (isAnswered && isAutoContinue && !waitForMultipleAnswers) {
+    } else if (canGoForward && isAutoContinue && !waitForMultipleAnswers) {
       if (hasAnswers) {
         // Make a delay only had answers...
         setTimeout(handleFinalButtonClick, answerWaitDelay);
@@ -291,7 +312,7 @@ export const GameScreen: React.FC<TGameScreenProps> = observer((props) => {
     }
   }, [
     computeNextScreenRoute,
-    isAnswered,
+    canGoForward,
     isAutoContinue,
     isFinishedComplete,
     memo,
@@ -320,8 +341,8 @@ export const GameScreen: React.FC<TGameScreenProps> = observer((props) => {
           className={classNames(
             styles.answerButton,
             isSelected && styles.selected,
-            isAnswered && styles.answered, // isCorrect && styles.correct,
-            isAnswered && isCorrect && styles.correct,
+            canGoForward && styles.answered, // isCorrect && styles.correct,
+            canGoForward && isCorrect && styles.correct,
           )}
           onClick={handleUserChoice}
           sx={sx}
@@ -329,7 +350,7 @@ export const GameScreen: React.FC<TGameScreenProps> = observer((props) => {
         ></ButtonBase>
       );
     });
-  }, [answersSx, answerIndices, answers, handleUserChoice, isAnswered]);
+  }, [answersSx, answerIndices, answers, handleUserChoice, canGoForward]);
   /** Skip video handler */
   const skipVideo = React.useCallback(() => {
     const video = refVideo.current;
@@ -351,7 +372,7 @@ export const GameScreen: React.FC<TGameScreenProps> = observer((props) => {
         (doDebug || videoComplete) && styles.videoComplete,
         (doDebug || videoEffectComplete) && styles.videoEffectComplete,
         (doDebug || isFinished) && styles.finished,
-        (doDebug || isAnswered) && styles.answered,
+        (doDebug || canGoForward) && styles.answered,
         (doDebug || isActive) && !isFinished && styles.active,
         isFinishedComplete && styles.finishedComplete,
         doDebug && styles.DEBUG,
