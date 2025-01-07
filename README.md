@@ -42,7 +42,6 @@ Published deplys:
 - Basic view: https://action-trainer-app-02.march.team/scenario241227a
 - Framed view: https://action-trainer-app-02.march.team/scenario241227a/frame-test
 
-
 ## Project workflow
 
 Install all required node dependencies:

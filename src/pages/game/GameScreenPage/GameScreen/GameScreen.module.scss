@@ -169,16 +169,16 @@ $textShadowSize: 0.2vw;
     position: absolute;
     border-style: dashed;
     border-radius: 2vmax !important;
-    border-width: .5vmax;
+    border-width: 0.5vmax;
     border-color: transparent; // color.change(white, $alpha: 0.8);
     transition: all $transitionTimeMs;
     font-size: 75%;
     $bgColor: $videoBlueColor;
-    $borderColor: color.change(#000, $alpha: 0.5);
+    $borderColor: $videoBlueColor; // color.change(#000, $alpha: 0.5);
     background-color: transparent; // $bgColor;
     opacity: 0.8;
     pointer-events: none;
-    .videoComplete:not(.answered) & {
+    .videoComplete/* :not(.answered) */ & {
       pointer-events: all;
     }
     .DEBUG &:global(.MuiButtonBase-root), // DEBUG: Show all frames
@@ -200,7 +200,7 @@ $textShadowSize: 0.2vw;
     }
     &.selected {
       border-style: solid;
-      border-color: color.change($borderColor, $alpha: 1);
+      border-color: color.change($borderColor, $alpha: 0.5);
     }
     .hasCorrectAnswer &.selected.correct {
       border-style: solid;

@@ -210,6 +210,11 @@ export const dialogGamesList: TDialogGame[] = [
       {
         id: '10',
         videoUrl: './scenario-data/videos/10.mp4',
+        waitForMultipleAnswers: true,
+        finalButtonSx: {
+          bottom: percent(2),
+          position: 'absolute',
+        },
         answers: [
           {
             text: 'Вариант 1',
@@ -256,6 +261,11 @@ export const dialogGamesList: TDialogGame[] = [
       {
         id: '11',
         videoUrl: './scenario-data/videos/11.mp4',
+        waitForMultipleAnswers: true,
+        finalButtonSx: {
+          bottom: percent(2),
+          position: 'absolute',
+        },
         answers: [
           {
             text: 'Вариант 1',

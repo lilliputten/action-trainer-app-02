@@ -58,6 +58,7 @@ export const GameScreen: React.FC<TGameScreenProps> = observer((props) => {
   const {
     id,
     videoUrl,
+    waitForMultipleAnswers,
     answers,
     showComment,
     showQuote,
@@ -69,6 +70,7 @@ export const GameScreen: React.FC<TGameScreenProps> = observer((props) => {
     showQuestionSx,
     showQuoteSx,
     showCommentSx,
+    finalButtonSx,
     buttonText = 'Продолжить',
   } = screenData;
   const isAutoContinue = autoContinue; // || gameAutoContinue;
@@ -78,7 +80,6 @@ export const GameScreen: React.FC<TGameScreenProps> = observer((props) => {
   const hasCorrectAnswer = Array.isArray(answers) && answers.find(({ isCorrect }) => isCorrect);
   // const screensCount = scenarioData.screens.length;
   const isLastScreen = false; // !screenGoTo && !hasAnswers; // screenNo === screensCount;
-  const showFinalButton = !hasAnswers;
   const isFinal = id === 'final';
   // const finalButtonText = buttonText || (isFinal ? 'Начать заново' : 'Завершить');
   const finalButtonText = isLastScreen ? (isFinal ? 'Начать заново' : 'Завершить') : buttonText;
@@ -103,8 +104,32 @@ export const GameScreen: React.FC<TGameScreenProps> = observer((props) => {
   const [isFinished, setFinished] = React.useState(false);
   const [isFinishedComplete, setFinishedComplete] = React.useState(false);
   /** Answer */
-  const [answerIdx, setAnswerIdx] = React.useState<number | undefined>();
+  const [answerIndices, setAnswerIndices] = React.useState<number[]>([]);
+  /** The recent (last) answer index */
+  const answerIdx: number | undefined = answerIndices[0];
+  // const [answerIdx, setAnswerIdx] = React.useState<number | undefined>();
+  const setAnswerIdx = React.useCallback((idx?: number) => {
+    setAnswerIndices((indices) => {
+      // Clear array if got an undefined idx
+      if (idx == null) {
+        return [];
+      }
+      const hasIdx = indices.includes(idx);
+      indices = indices.filter((checkIdx) => idx !== checkIdx);
+      if (!hasIdx) {
+        indices.unshift(idx);
+      }
+      /** console.log('[setAnswerIdx]', {
+       *   idx,
+       *   // prevIndices,
+       *   indices: [...indices],
+       * });
+       */
+      return indices;
+    });
+  }, []);
   const isAnswered = videoComplete && (!hasAnswers || answerIdx != null);
+  const showFinalButton = !hasAnswers || !autoContinue || (isAnswered && waitForMultipleAnswers);
   // Update geometry...
   const updateBoxGeometry = React.useCallback(() => {
     const box = refBox.current;
@@ -226,9 +251,11 @@ export const GameScreen: React.FC<TGameScreenProps> = observer((props) => {
     (event) => {
       const answerIdx = Number(event.currentTarget.id);
       setAnswerIdx(answerIdx);
-      setTimeout(handleFinalButtonClick, answerWaitDelay);
+      if (!waitForMultipleAnswers) {
+        setTimeout(handleFinalButtonClick, answerWaitDelay);
+      }
     },
-    [handleFinalButtonClick],
+    [handleFinalButtonClick, waitForMultipleAnswers, setAnswerIdx],
   );
   /** Prepared next screen route */
   const computeNextScreenRoute = React.useCallback(() => {
@@ -254,7 +281,7 @@ export const GameScreen: React.FC<TGameScreenProps> = observer((props) => {
       const nextScreenRoute = computeNextScreenRoute();
       memo.hasNavigated = true;
       navigate(nextScreenRoute);
-    } else if (isAnswered && isAutoContinue) {
+    } else if (isAnswered && isAutoContinue && !waitForMultipleAnswers) {
       if (hasAnswers) {
         // Make a delay only had answers...
         setTimeout(handleFinalButtonClick, answerWaitDelay);
@@ -271,13 +298,20 @@ export const GameScreen: React.FC<TGameScreenProps> = observer((props) => {
     navigate,
     handleFinalButtonClick,
     hasAnswers,
+    waitForMultipleAnswers,
   ]);
   /** Memoized action buttons (use `handleUserChoice` as an action) */
   const answerButtons = React.useMemo(() => {
     return answers?.map((item, idx) => {
       const { text, isCorrect, buttonSx } = item;
       const key = ['answer-button', idx].join('-');
-      const isSelected = answerIdx === idx;
+      const isSelected = answerIndices.includes(idx);
+      /* console.log('[answerButtons]', {
+       *   idx,
+       *   answerIndices,
+       *   isSelected,
+       * });
+       */
       const sx = { ...answersSx, ...buttonSx } as SxProps;
       return (
         <ButtonBase
@@ -295,7 +329,7 @@ export const GameScreen: React.FC<TGameScreenProps> = observer((props) => {
         ></ButtonBase>
       );
     });
-  }, [answersSx, answerIdx, answers, handleUserChoice, isAnswered]);
+  }, [answersSx, answerIndices, answers, handleUserChoice, isAnswered]);
   /** Skip video handler */
   const skipVideo = React.useCallback(() => {
     const video = refVideo.current;
@@ -350,6 +384,12 @@ export const GameScreen: React.FC<TGameScreenProps> = observer((props) => {
             fontSize: finalTextSize,
           }}
         >
+          {hasAnswers && (
+            <Box className={classNames(styles.overButtons)}>
+              {/* Answer buttons */}
+              {answerButtons}
+            </Box>
+          )}
           {showContent && (
             <Stack
               className={classNames(styles.overContent)}
@@ -400,7 +440,7 @@ export const GameScreen: React.FC<TGameScreenProps> = observer((props) => {
                       </Box>
                     )}
                   </Stack>
-                  {showFinalButton && !isAutoContinue && (
+                  {showFinalButton && (
                     <ButtonBase
                       className={classNames(
                         styles.finalButton,
@@ -411,6 +451,7 @@ export const GameScreen: React.FC<TGameScreenProps> = observer((props) => {
                       sx={{
                         borderWidth: finalButtonBorderWidth,
                         fontSize: finalTextSize,
+                        ...finalButtonSx,
                         // marginTop: '0.2em',
                       }}
                     >
@@ -422,12 +463,6 @@ export const GameScreen: React.FC<TGameScreenProps> = observer((props) => {
                 </>
               )}
             </Stack>
-          )}
-          {hasAnswers && (
-            <Box className={classNames(styles.overButtons)}>
-              {/* Answer buttons */}
-              {answerButtons}
-            </Box>
           )}
         </Box>
       </Box>

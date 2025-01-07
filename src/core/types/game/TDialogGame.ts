@@ -16,6 +16,7 @@ export interface TDialogScreen {
   id: TDialogScreenId;
   videoUrl?: TUrl;
   // finalSplashUrl: TUrl;
+  waitForMultipleAnswers?: boolean;
   answers?: TDialogAnswer[];
   showQuote?: string;
   showQuestion?: string;
@@ -28,6 +29,7 @@ export interface TDialogScreen {
   showQuestionSx?: SxProps;
   showQuoteSx?: SxProps;
   showCommentSx?: SxProps;
+  finalButtonSx?: SxProps;
   buttonText?: string;
 }
 
