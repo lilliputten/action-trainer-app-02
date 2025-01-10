@@ -286,6 +286,7 @@ $textShadowSize: 0.4vmin;
     &:not(.transparent) {
       background-color: #000;
       color: #fff;
+      border-radius: 10vmin;
     }
     &.transparent {
       color: transparent;
