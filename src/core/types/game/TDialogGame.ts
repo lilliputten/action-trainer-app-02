@@ -29,6 +29,7 @@ export interface TDialogScreen {
   showQuestionSx?: SxProps;
   showQuoteSx?: SxProps;
   showCommentSx?: SxProps;
+  finalButtonVariant?: 'transparent' | 'nice';
   finalButtonSx?: SxProps;
   buttonText?: string;
 }

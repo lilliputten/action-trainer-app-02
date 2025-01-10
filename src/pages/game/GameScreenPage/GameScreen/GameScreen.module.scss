@@ -160,6 +160,8 @@
 
 $buttonBorderWidth: 1vw;
 $buttonHoverFilters: brightness(110%) contrast(110%);
+// $finalRegularFilters: brightness(80%) contrast(80%);
+$finalHoverFilters: brightness(120%) contrast(120%);
 $buttonBlurFilters: blur(0.2vw);
 $textShadowSize: 0.2vw;
 
@@ -272,17 +274,27 @@ $textShadowSize: 0.4vmin;
 }
 
 .finalButton {
+  border-radius: 10vmin;
   &:global(.MuiButtonBase-root) {
     display: flex;
     gap: 1vw;
     overflow: hidden;
     transition: all $transitionTimeMs;
-    background-color: #000;
-    color: #fff;
     font-size: 4vw;
     padding: 2vw 4vw;
-    border-radius: 10vmin;
     opacity: 0.6;
+    &:not(.transparent) {
+      background-color: #000;
+      color: #fff;
+    }
+    &.transparent {
+      color: transparent;
+      // box-shadow: 0 0 0 2px color.change(black, $alpha: 0.6); // DEBUG: Show layout frame
+      // backdrop-filter: $finalRegularFilters;
+      &:hover {
+        backdrop-filter: $finalHoverFilters;
+      }
+    }
     &.nice:before {
       background: linear-gradient(165deg, transparent 0%, color.change(black, $alpha: 0.5) 100%);
     }

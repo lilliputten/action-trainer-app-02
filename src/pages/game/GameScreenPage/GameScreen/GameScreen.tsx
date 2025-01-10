@@ -70,6 +70,7 @@ export const GameScreen: React.FC<TGameScreenProps> = observer((props) => {
     showQuestionSx,
     showQuoteSx,
     showCommentSx,
+    finalButtonVariant,
     finalButtonSx,
     buttonText = 'Продолжить',
   } = screenData;
@@ -465,6 +466,7 @@ export const GameScreen: React.FC<TGameScreenProps> = observer((props) => {
                     <ButtonBase
                       className={classNames(
                         styles.finalButton,
+                        finalButtonVariant && styles[finalButtonVariant],
                         // niceFinalButton && styles.nice,
                       )}
                       title={finalButtonText}

@@ -211,9 +211,15 @@ export const dialogGamesList: TDialogGame[] = [
         id: '10',
         videoUrl: './scenario-data/videos/10.mp4',
         waitForMultipleAnswers: true,
+        finalButtonVariant: 'transparent',
+        buttonText: 'Проверить',
         finalButtonSx: {
-          bottom: percent(2),
+          borderRadius: 0,
+          bottom: percent(10),
+          right: percent(8.5),
+          width: percent(33.5),
           position: 'absolute',
+          height: percent(10),
         },
         answers: [
           {
@@ -233,7 +239,7 @@ export const dialogGamesList: TDialogGame[] = [
               ...defaultAnswerSx,
               top: percent(49),
               height: percent(13),
-              width: percent(94.5),
+              width: percent(35),
             },
           },
           {
@@ -243,7 +249,7 @@ export const dialogGamesList: TDialogGame[] = [
               ...defaultAnswerSx,
               top: percent(61.5),
               height: percent(13),
-              width: percent(94.5),
+              width: percent(45),
             },
           },
           {
@@ -253,7 +259,7 @@ export const dialogGamesList: TDialogGame[] = [
               ...defaultAnswerSx,
               top: percent(74.5),
               height: percent(13),
-              width: percent(94.5),
+              width: percent(25),
             },
           },
         ],
@@ -262,9 +268,15 @@ export const dialogGamesList: TDialogGame[] = [
         id: '11',
         videoUrl: './scenario-data/videos/11.mp4',
         waitForMultipleAnswers: true,
+        finalButtonVariant: 'transparent',
+        buttonText: 'Проверить',
         finalButtonSx: {
-          bottom: percent(2),
+          borderRadius: 0,
+          bottom: percent(10),
+          right: percent(8.5),
+          width: percent(33.5),
           position: 'absolute',
+          height: percent(10),
         },
         answers: [
           {
@@ -272,9 +284,10 @@ export const dialogGamesList: TDialogGame[] = [
             goTo: 'final',
             buttonSx: {
               ...defaultAnswerSx,
-              top: percent(29.5),
-              height: percent(12),
-              width: percent(94.5),
+              left: percent(8),
+              top: percent(31),
+              height: percent(9),
+              width: percent(55),
             },
           },
           {
@@ -282,9 +295,10 @@ export const dialogGamesList: TDialogGame[] = [
             goTo: 'final',
             buttonSx: {
               ...defaultAnswerSx,
-              top: percent(39),
-              height: percent(18),
-              width: percent(94.5),
+              left: percent(8),
+              top: percent(39.5),
+              height: percent(15),
+              width: percent(83),
             },
           },
           {
@@ -292,9 +306,10 @@ export const dialogGamesList: TDialogGame[] = [
             goTo: 'final',
             buttonSx: {
               ...defaultAnswerSx,
-              top: percent(54.5),
-              height: percent(12),
-              width: percent(94.5),
+              left: percent(8),
+              top: percent(53.75),
+              height: percent(9),
+              width: percent(48),
             },
           },
           {
@@ -302,9 +317,10 @@ export const dialogGamesList: TDialogGame[] = [
             goTo: 'final',
             buttonSx: {
               ...defaultAnswerSx,
-              top: percent(64),
-              height: percent(12),
-              width: percent(94.5),
+              left: percent(8),
+              top: percent(61.75),
+              height: percent(9),
+              width: percent(63),
             },
           },
           {
@@ -312,9 +328,10 @@ export const dialogGamesList: TDialogGame[] = [
             goTo: 'final',
             buttonSx: {
               ...defaultAnswerSx,
-              top: percent(73.5),
-              height: percent(12),
-              width: percent(94.5),
+              left: percent(8),
+              top: percent(70),
+              height: percent(9),
+              width: percent(91),
             },
           },
           {
@@ -322,9 +339,10 @@ export const dialogGamesList: TDialogGame[] = [
             goTo: 'final',
             buttonSx: {
               ...defaultAnswerSx,
-              top: percent(83),
-              height: percent(12),
-              width: percent(94.5),
+              left: percent(8),
+              top: percent(78.25),
+              height: percent(9),
+              width: percent(38),
             },
           },
         ],
