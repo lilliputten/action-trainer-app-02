@@ -135,7 +135,7 @@ export const dialogGamesList: TDialogGame[] = [
       },
       {
         id: '06',
-        videoUrl: './scenario-data/videos/05.mp4',
+        videoUrl: './scenario-data/videos/06.mp4',
         answers: [
           {
             text: 'Вариант 1',
