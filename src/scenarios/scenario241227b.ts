@@ -142,7 +142,7 @@ export const dialogGamesList: TDialogGame[] = [
             goTo: 'final',
             buttonSx: {
               ...defaultAnswerSx,
-              top: percent(36.25),
+              top: percent(29.25),
               height: percent(13),
             },
           },
@@ -151,16 +151,7 @@ export const dialogGamesList: TDialogGame[] = [
             goTo: 'final',
             buttonSx: {
               ...defaultAnswerSx,
-              top: percent(49),
-              height: percent(13),
-            },
-          },
-          {
-            text: 'Вариант 3',
-            goTo: 'final',
-            buttonSx: {
-              ...defaultAnswerSx,
-              top: percent(62),
+              top: percent(42.25),
               height: percent(13),
             },
           },
